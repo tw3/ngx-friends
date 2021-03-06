@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CoreMaterialModule } from './core-material/core-material.module';
 
 @NgModule({
   imports: [
-    BrowserModule
+    BrowserModule,
+    CoreMaterialModule
   ]
 })
 export class CoreModule {
