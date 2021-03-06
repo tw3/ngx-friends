@@ -1,6 +1,6 @@
 
 
-# Tw3
+# ngx-friends
 
 This project was generated using [Nx](https://nx.dev).
 
