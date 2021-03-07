@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../../shared/_models/user.model';
 import { ForceDirectedGraph, ForceDirectedGraphLink } from '../../../shared/_models/force-directed-graph.model';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
+  users$: Observable<User[]>;
+
   // TODO: Remove once NgRX is integrated
   private readonly users: User[];
   private readonly friendsGraph: ForceDirectedGraph;
+
+  private usersSubject: Subject<User[]> = new Subject<User[]>();
 
   constructor() {
     // this.users = [];
@@ -50,6 +54,8 @@ export class UsersService {
         }
       ]
     };
+
+    this.users$ = this.usersSubject.asObservable();
   }
 
   addUser(newUser: User): Observable<User> {
@@ -94,6 +100,8 @@ export class UsersService {
         // Trigger next() and complete()
         observer.next(newUser);
         observer.complete();
+
+        this.usersSubject.next(this.users);
       }, 1000);
     });
   }
@@ -107,6 +115,8 @@ export class UsersService {
       window.setTimeout(() => {
         observer.next(this.users);
         observer.complete();
+
+        this.usersSubject.next(this.users);
       }, 1000);
     });
   }

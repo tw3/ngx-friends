@@ -33,10 +33,11 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initListenForUsersChanges();
+
     this.usersService.getUsers().pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
-      next: this.handleGetUsersSuccess.bind(this),
       error: this.handleGetUsersError.bind(this)
     });
   }
@@ -62,7 +63,15 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     return !!this.friendsGraph && !!this.friendsGraph.nodes && this.friendsGraph.nodes.length > 0;
   }
 
-  private handleGetUsersSuccess(users: User[]): void {
+  private initListenForUsersChanges(): void {
+    this.usersService.users$.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe({
+      next: this.handleUsersChange.bind(this)
+    });
+  }
+
+  private handleUsersChange(users: User[]): void {
     // Update allFriendNames
     this.allFriendNames = users.map((user: User) => user.name);
 
