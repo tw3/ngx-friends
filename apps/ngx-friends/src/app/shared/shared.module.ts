@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NoContentComponent
   ],
   exports: [
+    CommonModule,
     CommonMaterialModule,
     FormsModule,
     ReactiveFormsModule,
