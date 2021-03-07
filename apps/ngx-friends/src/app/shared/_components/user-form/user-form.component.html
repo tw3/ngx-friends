@@ -76,7 +76,7 @@
                     aria-label="Friend selection">
                     <!-- chips for user friend names -->
                     <mat-chip
-                      *ngFor="let userFriendName of selectedUserFriendNames"
+                      *ngFor="let userFriendName of selectedFriendNames"
                       removable="true"
                       (removed)="onRemovedUserFriend(userFriendName);">
                       {{ userFriendName }}

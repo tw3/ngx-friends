@@ -121,6 +121,26 @@ export class UsersService {
     });
   }
 
+  getMatchingUsers(searchText: string, excludeFriendNames?: string[]): Observable<User[]> {
+    return new Observable<User[]>((observer: Observer<User[]>) => {
+      // This is where you'd normally have an httpClient.get() call, this timeout simulates it
+      window.setTimeout(() => {
+        searchText = searchText.toLowerCase();
+        const matchingUsers: User[] = this.users
+          .filter((user: User) => {
+            return !excludeFriendNames.includes(user.name);
+          })
+          .filter((user: User) => {
+            const lcUserName = user.name.toLowerCase();
+            const lcSearchText = searchText.toLowerCase();
+            return lcUserName.includes(lcSearchText);
+          });
+        observer.next(matchingUsers);
+        observer.complete();
+      }, 1000);
+    });
+  }
+
   getFriendsGraph(): Observable<ForceDirectedGraph> {
     return new Observable<ForceDirectedGraph>((observer: Observer<ForceDirectedGraph>) => {
       // This is where you'd normally have an httpClient.get() call, this timeout simulates it

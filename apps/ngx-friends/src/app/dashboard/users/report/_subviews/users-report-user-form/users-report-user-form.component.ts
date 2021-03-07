@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserFormComponent } from '../../../../../shared/_components/user-form/user-form.component';
 import { UsersService } from '../../../_services/users.service';
 import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
 import { User } from '../../../../../shared/_models/user.model';
 import { FormState } from '../../../../../shared/_models/form-state.enum';
-import { takeUntil } from 'rxjs/operators';
+import { switchMap, take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'tw3-users-report-user-form',
@@ -17,7 +17,7 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
 
   @ViewChild('userForm') private readonly userFormComponent: UserFormComponent;
 
-  private readonly friendAutocompleteOptionsSubject: Subject<string[]> = new Subject<string[]>();
+  private readonly friendAutocompleteOptionsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
@@ -50,15 +50,26 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private initListenForAutocompleteTyping(): void {
-    this.userFormComponent.friendNameInputValueChange$.pipe(
+    this.userFormComponent.friendNameInputValue$.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
-      next: this.onFriendAutocompleteTyping.bind(this)
+      next: this.onFriendNameInputValueChange.bind(this)
     });
   }
 
-  private onFriendAutocompleteTyping(searchText: string): void {
-    return this.friendAutocompleteOptionsSubject.next([searchText, 'Paul']);
+  private onFriendNameInputValueChange(searchText: string): void {
+    this.userFormComponent.selectedFriendNames$.pipe(
+      switchMap((selectedFriendNames: string[]) => {
+        console.log('selectedFriendNames', selectedFriendNames);
+        return this.usersService.getMatchingUsers(searchText, selectedFriendNames);
+      }),
+      take(1)
+    ).subscribe({
+      next: (users: User[]) => {
+        const userNames: string[] = users.map(u => u.name);
+        this.friendAutocompleteOptionsSubject.next(userNames);
+      }
+    });
   }
 
   private onUserAddSuccess(user: User): void {

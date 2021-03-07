@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { User } from '../../_models/user.model';
 import { FormState } from '../../_models/form-state.enum';
@@ -38,12 +38,14 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   @Output() readonly userSaved: EventEmitter<User> = new EventEmitter<User>();
 
-  readonly friendNameInputValueChange$: Observable<string>;
+  // public observables
+  readonly friendNameInputValue$: Observable<string>;
+  readonly selectedFriendNames$: Observable<string[]>;
 
   formGroup: FormGroup;
   isFormValid: boolean;
 
-  selectedUserFriendNames: string[] = [];
+  selectedFriendNames: string[] = [];
 
   private formState: FormState;
 
@@ -54,11 +56,13 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   @ViewChild('friendNameInput', { read: MatAutocompleteTrigger })
   private readonly autoCompleteTrigger: MatAutocompleteTrigger;
 
-  private readonly friendNameInputValueChangeSubject: Subject<string> = new Subject<string>();
+  private readonly friendNameInputValueSubject: Subject<string> = new Subject<string>();
+  private readonly selectedFriendNamesSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor() {
-    this.friendNameInputValueChange$ = this.friendNameInputValueChangeSubject.asObservable();
+    this.friendNameInputValue$ = this.friendNameInputValueSubject.asObservable();
+    this.selectedFriendNames$ = this.selectedFriendNamesSubject.asObservable();
   }
 
   ngOnInit(): void {
@@ -97,15 +101,17 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   onRemovedUserFriend(friendName: string): void {
-    const idx: number = this.selectedUserFriendNames.indexOf(friendName);
+    const idx: number = this.selectedFriendNames.indexOf(friendName);
     if (idx >= 0) {
-      this.selectedUserFriendNames.splice(idx, 1);
+      this.selectedFriendNames.splice(idx, 1);
     }
+    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
   }
 
   onAvailableFriendSelected(event: MatAutocompleteSelectedEvent): void {
     const friendName: string = event.option.viewValue;
-    this.selectedUserFriendNames.push(friendName);
+    this.selectedFriendNames.push(friendName);
+    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
   }
 
   onFormSubmit(): void {
@@ -119,7 +125,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       name: formUser.name,
       age: formUser.age,
       weight: formUser.weight,
-      friendNames: this.selectedUserFriendNames
+      friendNames: this.selectedFriendNames
     };
 
     // Emit the new user
@@ -175,7 +181,8 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       friendNameInput: new FormControl()
     });
 
-    this.selectedUserFriendNames = this.user && this.user.friendNames || [];
+    this.selectedFriendNames = this.user && this.user.friendNames || [];
+    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
 
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
@@ -197,7 +204,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   private onFriendNameValueChanged(friendNameValue: string): void {
-    this.friendNameInputValueChangeSubject.next(friendNameValue);
+    this.friendNameInputValueSubject.next(friendNameValue);
   }
 
   // private methods: friend name input
@@ -227,7 +234,8 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   private resetForm(): void {
-    this.selectedUserFriendNames = [];
+    this.selectedFriendNames = [];
+    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
     this.formElem.resetForm();
     this.formGroup.markAsUntouched();
   }
