@@ -86,9 +86,9 @@
                     <!-- text input for new friend name -->
                     <input
                       matInput
+                      formControlName="friendNameInput"
                       [matAutocomplete]="availableFriendNamesAutocomplete"
                       [matChipInputFor]="userFriendNamesChipList"
-                      formControlName="friendNameInput"
                       matChipInputAddOnBlur="false"
                       placeholder="Friends"
                       aria-label="Friends" />
@@ -124,6 +124,10 @@
         </mat-card-actions>
 
         <mat-card-footer>
+          <mat-progress-bar
+            *ngIf="isFormSaving"
+            mode="indeterminate">
+          </mat-progress-bar>
         </mat-card-footer>
       </mat-card>
     </form>

@@ -14,6 +14,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formGroup: FormGroup;
   isFormValid: boolean;
+  isFormSaving = false;
 
   userFriendNames: string[] = []; // ['John', 'Sally'];
   friendNameAutocompleteOptions: string[] = []; // ['Abraham', 'Beth'];
