@@ -6,6 +6,7 @@ import { NotificationService } from '../../../../../core/_services/notification-
 import { User } from '../../../../../shared/_models/user.model';
 import { FormState } from '../../../../../shared/_models/form-state.enum';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { RandomUtil } from '../../../../../shared/_util/random_util';
 
 @Component({
   selector: 'tw3-users-report-user-form',
@@ -14,6 +15,8 @@ import { switchMap, take, takeUntil } from 'rxjs/operators';
 })
 export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly friendAutocompleteOptions$: Observable<string[]>;
+
+  user: User = null;
 
   @ViewChild('userForm') private readonly userFormComponent: UserFormComponent;
 
@@ -48,6 +51,21 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
       error: (error: Error) => this.onUserAddError(error, user)
     });
   }
+
+  onRequestRandomUser(): void {
+    this.usersService.getUsers().pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((users: User[]) => {
+      const userNames: string[] = users.map(u => u.name);
+      this.user = {
+        name: RandomUtil.stringGen(),
+        age: RandomUtil.getRandomInt(1, 100),
+        weight: RandomUtil.getRandomInt(8, 400),
+        friendNames: RandomUtil.getRandomArraySubset(userNames)
+      };
+    });
+  }
+
 
   private initListenForAutocompleteTyping(): void {
     this.userFormComponent.friendNameInputValue$.pipe(

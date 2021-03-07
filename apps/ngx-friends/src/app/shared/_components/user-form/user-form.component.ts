@@ -9,6 +9,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -32,11 +33,12 @@ interface FormUser {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input() user: User; // TODO: Initialize form based on this input, update in ngOnChanges
+  @Input() user: User;
   @Input() shouldEnableFriendInput = true;
   @Input() friendNameOptions$: Observable<string[]>;
 
   @Output() readonly userSaved: EventEmitter<User> = new EventEmitter<User>();
+  @Output() readonly requestRandomUser: EventEmitter<void> = new EventEmitter<void>();
 
   // public observables
   readonly friendNameInputValue$: Observable<string>;
@@ -44,8 +46,6 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   formGroup: FormGroup;
   isFormValid: boolean;
-
-  selectedFriendNames: string[] = [];
 
   private formState: FormState;
 
@@ -60,6 +60,8 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   private readonly selectedFriendNamesSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
+  private _selectedFriendNames: string[] = [];
+
   constructor() {
     this.friendNameInputValue$ = this.friendNameInputValueSubject.asObservable();
     this.selectedFriendNames$ = this.selectedFriendNamesSubject.asObservable();
@@ -68,7 +70,18 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   ngOnInit(): void {
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.user && changes.user.currentValue && !changes.user.firstChange) {
+      this.formGroup.patchValue({
+        name: this.user.name,
+        age: this.user.age,
+        weight: this.user.weight,
+        friendNameInput: ''
+      });
+      this.selectedFriendNames = this.user.friendNames;
+      this.setFormState(FormState.READY);
+      return;
+    }
     this.setFormState(FormState.READY);
     this.buildForm();
   }
@@ -84,22 +97,36 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.ngUnsubscribe.complete();
   }
 
-  get isSaving(): boolean {
-    return this.formState === FormState.SAVING;
+  get selectedFriendNames(): string[] {
+    return this._selectedFriendNames;
+  }
+
+  set selectedFriendNames(selectedFriendNames: string[]) {
+    this._selectedFriendNames = selectedFriendNames;
+    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
+  }
+
+  get isFormBusy(): boolean {
+    return (
+      this.formState === FormState.SAVING ||
+      this.formState === FormState.LOADING
+    );
+  }
+
+  onClickPopulateRandomData(): void {
+    this.setFormState(FormState.LOADING);
+    this.requestRandomUser.emit();
   }
 
   onRemovedUserFriend(friendName: string): void {
-    const idx: number = this.selectedFriendNames.indexOf(friendName);
-    if (idx >= 0) {
-      this.selectedFriendNames.splice(idx, 1);
-    }
-    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
+    this.selectedFriendNames = this.selectedFriendNames.filter((name: string) => {
+      return (name !== friendName);
+    });
   }
 
   onAvailableFriendSelected(event: MatAutocompleteSelectedEvent): void {
     const friendName: string = event.option.viewValue;
-    this.selectedFriendNames.push(friendName);
-    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
+    this.selectedFriendNames = [...this.selectedFriendNames, friendName];
   }
 
   onFormSubmit(): void {
@@ -130,7 +157,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
     // Enable/disable form
     if (this.formGroup) {
-      if (this.formState === FormState.SAVING) {
+      if (this.formState === FormState.SAVING || this.formState === FormState.LOADING) {
         this.formGroup.disable();
         return;
       }
@@ -170,7 +197,6 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     });
 
     this.selectedFriendNames = this.user && this.user.friendNames || [];
-    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
 
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
@@ -223,7 +249,6 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   private resetForm(): void {
     this.selectedFriendNames = [];
-    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
     this.formElem.resetForm();
     this.formGroup.markAsUntouched();
   }

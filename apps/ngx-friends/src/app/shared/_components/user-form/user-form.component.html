@@ -116,12 +116,19 @@
           <button
             mat-raised-button
             color="primary"
-            [disabled]="!isFormValid || isSaving">
+            [disabled]="!isFormValid || isFormBusy">
             Add User
           </button>
           <button
             mat-raised-button
-            [disabled]="isSaving"
+            [disabled]="isFormBusy"
+            (click)="onClickPopulateRandomData()">
+            Populate Random Data
+            <mat-icon>shuffle</mat-icon>
+          </button>
+          <button
+            mat-raised-button
+            [disabled]="isFormBusy"
             (click)="onClickReset($event)">
             Reset
           </button>
@@ -129,7 +136,7 @@
 
         <mat-card-footer>
           <mat-progress-bar
-            *ngIf="isSaving"
+            *ngIf="isFormBusy"
             mode="indeterminate">
           </mat-progress-bar>
         </mat-card-footer>
