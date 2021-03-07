@@ -22,6 +22,7 @@
               <div class="col-xs-12">
                 <mat-form-field>
                   <input
+                    aria-label="Name"
                     formControlName="name"
                     matInput
                     placeholder="Name" />
@@ -32,6 +33,15 @@
         </mat-card-content>
 
         <mat-card-actions>
+          <button
+            color="primary"
+            mat-raised-button>
+            Save
+          </button>
+          <button
+            mat-raised-button>
+            Reset
+          </button>
         </mat-card-actions>
 
         <mat-card-footer>
