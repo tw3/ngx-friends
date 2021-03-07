@@ -1,4 +1,4 @@
-export interface User {
+export interface UserEntity {
   name: string;
   age: number;
   weight: number;

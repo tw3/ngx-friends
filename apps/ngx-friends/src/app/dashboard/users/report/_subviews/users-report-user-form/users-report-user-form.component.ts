@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserFormComponent } from '../../../../../shared/_components/user-form/user-form.component';
 import { UsersService } from '../../../_services/users.service';
 import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
-import { User } from '../../../../../shared/_models/user.model';
+import { UserEntity } from '../../../../../shared/_models/user.model';
 import { FormState } from '../../../../../shared/_models/form-state.enum';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
 import { RandomUtil } from '../../../../../shared/_util/random_util';
@@ -16,7 +16,7 @@ import { RandomUtil } from '../../../../../shared/_util/random_util';
 export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly friendAutocompleteOptions$: Observable<string[]>;
 
-  user: User = null;
+  user: UserEntity = null;
 
   @ViewChild('userForm') private readonly userFormComponent: UserFormComponent;
 
@@ -42,7 +42,7 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
     this.ngUnsubscribe.complete();
   }
 
-  onUserSaved(user: User): void {
+  onUserSaved(user: UserEntity): void {
     this.userFormComponent.setFormState(FormState.SAVING);
     this.usersService.addUser(user).pipe(
       takeUntil(this.ngUnsubscribe)
@@ -55,7 +55,7 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
   onRequestRandomUser(): void {
     this.usersService.getUsers().pipe(
       takeUntil(this.ngUnsubscribe)
-    ).subscribe((users: User[]) => {
+    ).subscribe((users: UserEntity[]) => {
       const userNames: string[] = users.map(u => u.name);
       this.user = {
         name: RandomUtil.stringGen(),
@@ -82,20 +82,20 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
       }),
       take(1)
     ).subscribe({
-      next: (users: User[]) => {
+      next: (users: UserEntity[]) => {
         const userNames: string[] = users.map(u => u.name);
         this.friendAutocompleteOptionsSubject.next(userNames);
       }
     });
   }
 
-  private onUserAddSuccess(user: User): void {
+  private onUserAddSuccess(user: UserEntity): void {
     this.notificationService.showSuccessToast(`User '${user.name}' added successfully`);
 
     this.userFormComponent.setFormState(FormState.SAVED);
   }
 
-  private onUserAddError(error: Error, user: User): void {
+  private onUserAddError(error: Error, user: UserEntity): void {
     const errorMessage: string = error.message;
 
     this.notificationService.showErrorToast(`User '${user.name}' add failed: ${errorMessage}`);

@@ -4,7 +4,7 @@ import { BubbleChartDataPoint } from '../../../../../shared/chart-cards/bubble-c
 import { ForceDirectedGraph } from '../../../../../shared/_models/force-directed-graph.model';
 import { UsersService } from '../../../_services/users.service';
 import { takeUntil } from 'rxjs/operators';
-import { User } from '../../../../../shared/_models/user.model';
+import { UserEntity } from '../../../../../shared/_models/user.model';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
 
@@ -71,15 +71,15 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleUsersChange(users: User[]): void {
+  private handleUsersChange(users: UserEntity[]): void {
     // Update allFriendNames
-    this.allFriendNames = users.map((user: User) => user.name);
+    this.allFriendNames = users.map((user: UserEntity) => user.name);
 
     // Convert users into results
     this.userAgeResults = [];
     this.userWeightResults = [];
     this.ageWeightResults = [];
-    users.forEach((user: User) => {
+    users.forEach((user: UserEntity) => {
       this.userAgeResults.push({
         name: user.name,
         value: user.age

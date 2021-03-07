@@ -16,7 +16,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { User } from '../../_models/user.model';
+import { UserEntity } from '../../_models/user.model';
 import { FormState } from '../../_models/form-state.enum';
 
 interface FormUser {
@@ -33,11 +33,11 @@ interface FormUser {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input() user: User;
+  @Input() user: UserEntity;
   @Input() shouldEnableFriendInput = true;
   @Input() friendNameOptions$: Observable<string[]>;
 
-  @Output() readonly userSaved: EventEmitter<User> = new EventEmitter<User>();
+  @Output() readonly userSaved: EventEmitter<UserEntity> = new EventEmitter<UserEntity>();
   @Output() readonly requestRandomUser: EventEmitter<void> = new EventEmitter<void>();
 
   // public observables
@@ -136,7 +136,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
     // Get the new user object from the form
     const formUser: FormUser = this.formGroup.value as FormUser;
-    const newUser: User = {
+    const newUser: UserEntity = {
       name: formUser.name,
       age: formUser.age,
       weight: formUser.weight,
