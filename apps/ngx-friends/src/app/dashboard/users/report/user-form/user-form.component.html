@@ -67,6 +67,7 @@
 
         <mat-card-actions>
           <button
+            [disabled]="!isFormValid"
             color="primary"
             mat-raised-button>
             Save
