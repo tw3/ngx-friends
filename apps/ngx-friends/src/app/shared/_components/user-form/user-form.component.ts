@@ -84,20 +84,8 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.ngUnsubscribe.complete();
   }
 
-  get isReady(): boolean {
-    return this.formState === FormState.READY;
-  }
-
   get isSaving(): boolean {
     return this.formState === FormState.SAVING;
-  }
-
-  get isSaved(): boolean {
-    return this.formState === FormState.SAVED;
-  }
-
-  get isError(): boolean {
-    return this.formState === FormState.ERROR;
   }
 
   onRemovedUserFriend(friendName: string): void {
