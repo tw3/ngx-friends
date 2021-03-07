@@ -18,7 +18,19 @@ export class UserFormComponent implements OnInit {
 
   private buildForm(): void {
     this.formGroup = new FormGroup({
-      name: new FormControl('', [Validators.required])
+      name: new FormControl('', [Validators.required]),
+      age: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.min(0),
+        Validators.pattern('^[0-9]+$'),
+        Validators.maxLength(3)
+      ])),
+      weight: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.min(0),
+        Validators.pattern('^[0-9]+$'),
+        Validators.maxLength(3)
+      ]))
     });
   }
 
