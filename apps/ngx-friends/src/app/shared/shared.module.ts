@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CommonMaterialModule } from './_modules/common-material.module';
 import { NoContentComponent } from './_components/no-content/no-content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserFormComponent } from './_components/user-form/user-form.component';
 
 @NgModule({
   imports: [
@@ -12,14 +13,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   declarations: [
-    NoContentComponent
+    NoContentComponent,
+    UserFormComponent
   ],
   exports: [
     CommonModule,
     CommonMaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    NoContentComponent
+    NoContentComponent,
+    UserFormComponent
   ]
 })
 export class SharedModule {
