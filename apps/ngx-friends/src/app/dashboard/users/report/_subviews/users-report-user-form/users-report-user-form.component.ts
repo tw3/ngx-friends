@@ -60,7 +60,6 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
   private onFriendNameInputValueChange(searchText: string): void {
     this.userFormComponent.selectedFriendNames$.pipe(
       switchMap((selectedFriendNames: string[]) => {
-        console.log('selectedFriendNames', selectedFriendNames);
         return this.usersService.getMatchingUsers(searchText, selectedFriendNames);
       }),
       take(1)
