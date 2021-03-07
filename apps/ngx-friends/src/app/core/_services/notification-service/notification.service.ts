@@ -45,7 +45,9 @@ export class NotificationService {
 
     const hasAction = !!actionButtonFn;
     if (hasAction) {
-      snackBarRef.onAction().subscribe(actionButtonFn);
+      snackBarRef.onAction().subscribe({
+        next: actionButtonFn
+      });
     }
   }
 

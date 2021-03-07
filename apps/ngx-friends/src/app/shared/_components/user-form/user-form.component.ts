@@ -180,7 +180,9 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
       takeUntil(this.ngUnsubscribe)
-    ).subscribe(this.onFormGroupStatusChanged.bind(this));
+    ).subscribe({
+      next: this.onFormGroupStatusChanged.bind(this)
+    });
 
     // React to friend name input value changes
     this.formGroup.controls['friendNameInput'].valueChanges.pipe(

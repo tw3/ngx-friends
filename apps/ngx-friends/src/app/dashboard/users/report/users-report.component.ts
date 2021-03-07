@@ -52,7 +52,9 @@ export class UsersReportComponent implements OnInit, AfterViewInit, OnDestroy {
   private initListenForAutocompleteTyping(): void {
     this.userFormComponent.friendNameInputValueChange$.pipe(
       takeUntil(this.ngUnsubscribe)
-    ).subscribe(this.onFriendAutocompleteTyping.bind(this));
+    ).subscribe({
+      next: this.onFriendAutocompleteTyping.bind(this)
+    });
   }
 
   private onFriendAutocompleteTyping(searchText: string): void {
