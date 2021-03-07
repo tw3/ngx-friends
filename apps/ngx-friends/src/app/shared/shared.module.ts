@@ -4,13 +4,15 @@ import { CommonMaterialModule } from './_modules/common-material.module';
 import { NoContentComponent } from './_components/no-content/no-content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserFormComponent } from './_components/user-form/user-form.component';
+import { ChartCardsModule } from './chart-cards/chart-cards.module';
 
 @NgModule({
   imports: [
     CommonModule,
     CommonMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartCardsModule
   ],
   declarations: [
     NoContentComponent,
@@ -21,6 +23,7 @@ import { UserFormComponent } from './_components/user-form/user-form.component';
     CommonMaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    ChartCardsModule,
     NoContentComponent,
     UserFormComponent
   ]

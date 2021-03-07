@@ -12,12 +12,26 @@ export class UsersService {
   private readonly friendsGraph: ForceDirectedGraph;
 
   constructor() {
-    this.users = [];
+    // this.users = [];
     // this.friendsGraph = {
     //   links: [],
     //   nodes: []
     // };
 
+    this.users = [
+      {
+        name: 'abc',
+        age: 12,
+        weight: 34,
+        friendNames: ['def']
+      },
+      {
+        name: 'def',
+        age: 89,
+        weight: 77,
+        friendNames: ['abc']
+      }
+    ];
     this.friendsGraph = {
       links: [
         {
