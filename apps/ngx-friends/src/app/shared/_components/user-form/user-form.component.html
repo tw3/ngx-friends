@@ -112,13 +112,14 @@
 
         <mat-card-actions>
           <button
-            [disabled]="!isFormValid"
+            mat-raised-button
             color="primary"
-            mat-raised-button>
+            [disabled]="!isFormValid || isFormSaving">
             Save
           </button>
           <button
-            mat-raised-button>
+            mat-raised-button
+            [disabled]="isFormSaving">
             Reset
           </button>
         </mat-card-actions>
