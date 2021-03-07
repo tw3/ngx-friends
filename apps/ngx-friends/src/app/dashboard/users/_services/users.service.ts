@@ -137,7 +137,7 @@ export class UsersService {
           });
         observer.next(matchingUsers);
         observer.complete();
-      }, 1000);
+      }, 20);
     });
   }
 
