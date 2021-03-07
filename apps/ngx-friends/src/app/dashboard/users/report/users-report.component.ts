@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UserFormComponent } from '../../../shared/_components/user-form/user-form.component';
 import { FormState } from '../../../shared/_models/form-state.enum';
 import { NotificationService } from '../../../core/_services/notification-service/notification.service';
+import { UsersService } from '../_services/users.service';
 
 @Component({
   selector: 'tw3-report',
@@ -20,6 +21,7 @@ export class UsersReportComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    private readonly usersService: UsersService,
     private readonly notificationService: NotificationService
   ) {
     this.friendAutocompleteOptions$ = this.friendAutocompleteOptionsSubject.asObservable();
@@ -39,11 +41,12 @@ export class UsersReportComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onUserSaved(user: User): void {
     this.userFormComponent.setFormState(FormState.SAVING);
-    // Simulate wait for now
-    setTimeout(() => {
-      this.userFormComponent.setFormState(FormState.SAVED);
-      this.notificationService.showSuccessToast('User saved successfully');
-    }, 2000);
+    this.usersService.addUser(user).pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe({
+      next: () => this.onUserAddSuccess(user),
+      error: (error: Error) => this.onUserAddError(error, user)
+    });
   }
 
   private initListenForAutocompleteTyping(): void {
@@ -54,6 +57,21 @@ export class UsersReportComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onFriendAutocompleteTyping(searchText: string): void {
     return this.friendAutocompleteOptionsSubject.next([searchText, 'Paul']);
+  }
+
+  private onUserAddSuccess(user: User): void {
+    this.notificationService.showSuccessToast(`User '${user.name}' added successfully`);
+
+    this.userFormComponent.setFormState(FormState.SAVED);
+  }
+
+  private onUserAddError(error: Error, user: User): void {
+    const errorMessage: string = error.message;
+
+    this.notificationService.showErrorToast(`User '${user.name}' add failed: ${errorMessage}`);
+
+    this.userFormComponent.setFormState(FormState.ERROR, errorMessage);
+
   }
 
 }

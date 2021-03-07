@@ -43,7 +43,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   formGroup: FormGroup;
   isFormValid: boolean;
 
-  selectedUserFriendNames: string[] = []; // ['John', 'Sally'];
+  selectedUserFriendNames: string[] = [];
 
   private formState: FormState;
 
@@ -175,7 +175,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       friendNameInput: new FormControl()
     });
 
-    this.selectedUserFriendNames = this.user && this.user.friendNames;
+    this.selectedUserFriendNames = this.user && this.user.friendNames || [];
 
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
