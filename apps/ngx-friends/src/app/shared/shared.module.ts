@@ -2,17 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommonMaterialModule } from './_modules/common-material.module';
 import { NoContentComponent } from './_components/no-content/no-content.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
-    CommonMaterialModule
+    CommonMaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     NoContentComponent
   ],
   exports: [
     CommonMaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     NoContentComponent
   ]
 })
