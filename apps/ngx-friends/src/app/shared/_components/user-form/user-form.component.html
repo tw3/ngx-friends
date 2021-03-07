@@ -4,7 +4,7 @@
     <form
       #formElem="ngForm"
       [formGroup]="formGroup"
-      (ngSubmit)="onFormSave()"
+      (ngSubmit)="onFormSubmit()"
       novalidate>
 
       <mat-card>
@@ -117,7 +117,7 @@
             mat-raised-button
             color="primary"
             [disabled]="!isFormValid || isSaving">
-            Save
+            Add User
           </button>
           <button
             mat-raised-button

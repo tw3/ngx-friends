@@ -108,7 +108,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.selectedUserFriendNames.push(friendName);
   }
 
-  onFormSave(): void {
+  onFormSubmit(): void {
     if (!this.isFormValid) {
       return;
     }
