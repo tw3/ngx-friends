@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
@@ -29,7 +30,7 @@ interface FormUser {
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() user: User; // TODO: Initialize form based on this input, update in ngOnChanges
   @Input() shouldEnableFriendInput = true;
   @Input() friendNameOptions$: Observable<string[]>;
@@ -59,6 +60,9 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(): void {
     this.buildForm();
   }
 
@@ -112,21 +116,29 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private buildForm(): void {
     this.formGroup = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      age: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.min(0),
-        Validators.pattern('^[0-9]+$'),
-        Validators.maxLength(3)
-      ])),
-      weight: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.min(0),
-        Validators.pattern('^[0-9]+$'),
-        Validators.maxLength(3)
-      ])),
-      friendNameInput: new FormControl({ value: '', disabled: true })
+      name: new FormControl(this.user && this.user.name,
+        [Validators.required]
+      ),
+      age: new FormControl(this.user && this.user.age,
+        Validators.compose([
+          Validators.required,
+          Validators.min(0),
+          Validators.pattern('^[0-9]+$'),
+          Validators.maxLength(3)
+        ])
+      ),
+      weight: new FormControl(this.user && this.user.weight,
+        Validators.compose([
+          Validators.required,
+          Validators.min(0),
+          Validators.pattern('^[0-9]+$'),
+          Validators.maxLength(3)
+        ])
+      ),
+      friendNameInput: new FormControl()
     });
+
+    this.selectedUserFriendNames = this.user && this.user.friendNames;
 
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
