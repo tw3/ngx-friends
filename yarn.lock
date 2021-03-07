@@ -256,7 +256,7 @@
   dependencies:
     tslib "^2.0.0"
 
-"@angular/core@^11.2.0":
+"@angular/core@^11.0.2", "@angular/core@^11.2.0":
   version "11.2.4"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-11.2.4.tgz#f655f05ebb245ff83c49f563193a8496afc9a36a"
   integrity sha512-MU2DxGJOMLS6rqrakzEKJ2s+CYamM5ETBInqx4uTBJYsek3byF9gbjM6221lv8tal5dMAibigB0UuhXr23rhcQ==
@@ -1575,6 +1575,55 @@
     loader-utils "^2.0.0"
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
+
+"@ngrx/component-store@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/component-store/-/component-store-11.0.1.tgz#1479702fbff854d6d955f2540839067ddf51a637"
+  integrity sha512-kbiO6Mzh1X12TXedz0xo4i62pwWfkdocw6mzGB1eNZtZYbS1377okZDcXlTeRJH4WhzxqsucKIYXbCE77AhH2A==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/effects@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-11.0.1.tgz#54d272e7bca411eaad5de144c67876beaba99b5f"
+  integrity sha512-FJa0WVr0PcPgFXCv8i//RDAVV26pl0ieOLH3yDnZN0BH6/cDeUcKtWsWv+IAiJ63dFm9VedgNgwVo0I7CP9G+g==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/entity@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/entity/-/entity-11.0.1.tgz#422fe1db4e16ec0483d171c540d7d47abbbbc6a2"
+  integrity sha512-Xibc6DnP8hNZj7afrP051laEVJfA+YohOl4uJU/ggdQheg+2U2feoZq9f115aSsYbDjOJtq4eg1VC3y1f64g1g==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/router-store@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/router-store/-/router-store-11.0.1.tgz#3bd47263e2fc29e9811c5466df34d11c0ddc9af5"
+  integrity sha512-ZXx1qxRy1uP6iZ721uPTmO/VYYqKAj0WaXJsMOX/eTK0WkOWiCvQ9y6oCvyR6YyyIY2cCMk1QicB1+xRotU8Rg==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/schematics@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/schematics/-/schematics-11.0.1.tgz#c88dc3b09887284863191c8a77beac410d7d5c8e"
+  integrity sha512-hbqYqQ9/svZZouQwqn1xpyA0I+s1TXaOi07gUgheyRzRIpjXQJT7ZIHvU5Vb4iwZKLwSalfRY/rwQHs3zByV4w==
+  dependencies:
+    "@angular/core" "^11.0.2"
+
+"@ngrx/store-devtools@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-11.0.1.tgz#64b332f64e73538e7facb9d9d7e5f66c7ff1b834"
+  integrity sha512-ez4GW08lqJonvLVtlWM/4MJY/oHFFItMtreOtE/US+yAPuDZTnhmfjX9hqk3ySkX+drPjOfeqQ+vTYCkbmgwrw==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/store@^11.0.0":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-11.0.1.tgz#fd229b704bb9847ddd2c299cf26eb19017aa7f9a"
+  integrity sha512-ULk+z7fXg1S0mbSXatHplvg8Rqj9Hglo6pVugaDgLdFR3DD5Wpl0cefvLBscaeZF9DGrLBoPZVlFq/LACRr6tA==
+  dependencies:
+    tslib "^2.0.0"
 
 "@ngtools/webpack@11.2.3":
   version "11.2.3"
