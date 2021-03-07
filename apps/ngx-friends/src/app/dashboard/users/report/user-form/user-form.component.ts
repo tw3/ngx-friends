@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -9,12 +9,11 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss']
 })
-export class UserFormComponent implements OnInit, OnDestroy {
+export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() allFriendNames: string[];
 
   formGroup: FormGroup;
   isFormValid: boolean;
-  shouldDisableFriendNameInput: boolean;
 
   userFriendNames: string[] = []; // ['John', 'Sally'];
   friendNameAutocompleteOptions: string[] = []; // ['Abraham', 'Beth'];
@@ -26,6 +25,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.buildForm();
+  }
+
+  ngAfterViewInit(): void {
+    // Would prefer to execute this in buildForm() but there seems to be be
+    // a bug in Angular
+    this.enableOrDisableFriendNameInput();
   }
 
   ngOnDestroy(): void {
@@ -63,13 +68,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
       friendNameInput: new FormControl({ value: '', disabled: true })
     });
 
-    this.enableOrDisableFriendNameInput();
-
     this.formGroup.statusChanges.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe(this.onFormGroupStatusChanged.bind(this));
-
-    this.formGroup.controls['friendNameInput'].disable();
   }
 
   private onFormGroupStatusChanged(status: string): void {
@@ -82,10 +83,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     const shouldEnable = this.getShouldEnableFriendNameInput();
     if (shouldEnable) {
       this.formGroup.controls['friendNameInput'].enable();
-      console.log('enabled');
     } else {
       this.formGroup.controls['friendNameInput'].disable();
-      console.log('disabled', this.formGroup.controls['friendNameInput']);
     }
   }
 
