@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
+
     <form
       [formGroup]="formGroup"
+      (ngSubmit)="onFormSave()"
       novalidate>
 
       <mat-card>
@@ -125,5 +127,6 @@
         </mat-card-footer>
       </mat-card>
     </form>
+
   </div>
 </div>

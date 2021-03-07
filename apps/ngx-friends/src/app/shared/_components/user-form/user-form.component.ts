@@ -38,14 +38,16 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  // Friends input
-
   onRemovedUserFriend(friendName: string): void {
     console.log('TODO: onRemovedUserFriend', friendName);
   }
 
   onAvailableFriendSelected(event: MatAutocompleteSelectedEvent): void {
     console.log('TODO: onAvailableFriendSelected', event);
+  }
+
+  onFormSave(): void {
+    console.log('TODO: onFormSave');
   }
 
   // private methods: init
