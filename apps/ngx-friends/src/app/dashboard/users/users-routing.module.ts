@@ -5,7 +5,18 @@ import { UsersComponent } from './users.component';
 const routes: Routes = [
   {
     path: '',
-    component: UsersComponent
+    component: UsersComponent,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'report'
+      },
+      {
+        path: 'report',
+        loadChildren: () => import('./report/users-report.module').then(m => m.UsersReportModule)
+      }
+    ]
   }
 ];
 
