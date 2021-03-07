@@ -1,8 +1,27 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { User } from '../../_models/user.model';
+
+interface FormUser {
+  name: string;
+  age: number;
+  weight: number;
+  friendNameInput: string;
+}
 
 @Component({
   selector: 'tw3-user-form',
@@ -11,18 +30,32 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() allFriendNames: string[];
+  @Input() user: User; // TODO: Initialize form based on this input, update in ngOnChanges
+  @Input() shouldEnableFriendInput = true;
+  @Input() friendNameOptions$: Observable<string[]>;
+
+  @Output() readonly userSaved: EventEmitter<User> = new EventEmitter<User>();
+
+  readonly friendNameInputValueChange$: Observable<string>;
 
   formGroup: FormGroup;
   isFormValid: boolean;
   isFormSaving = false;
 
-  userFriendNames: string[] = []; // ['John', 'Sally'];
-  friendNameAutocompleteOptions: string[] = []; // ['Abraham', 'Beth'];
+  selectedUserFriendNames: string[] = []; // ['John', 'Sally'];
 
+  @ViewChild('formElem')
+  private readonly formElem: HTMLFormElement;
+  @ViewChild('friendNameInput')
+  private readonly friendNameInputElem: ElementRef;
+  @ViewChild('friendNameInput', { read: MatAutocompleteTrigger })
+  private readonly autoCompleteTrigger: MatAutocompleteTrigger;
+
+  private readonly friendNameInputValueChangeSubject: Subject<string> = new Subject<string>();
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor() {
+    this.friendNameInputValueChange$ = this.friendNameInputValueChangeSubject.asObservable();
   }
 
   ngOnInit(): void {
@@ -41,15 +74,38 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRemovedUserFriend(friendName: string): void {
-    console.log('TODO: onRemovedUserFriend', friendName);
+    const idx: number = this.selectedUserFriendNames.indexOf(friendName);
+    if (idx >= 0) {
+      this.selectedUserFriendNames.splice(idx, 1);
+    }
   }
 
   onAvailableFriendSelected(event: MatAutocompleteSelectedEvent): void {
-    console.log('TODO: onAvailableFriendSelected', event);
+    const friendName: string = event.option.viewValue;
+    this.selectedUserFriendNames.push(friendName);
   }
 
   onFormSave(): void {
-    console.log('TODO: onFormSave');
+    if (!this.isFormValid) {
+      return;
+    }
+
+    // Get the new user object from the form
+    const formUser: FormUser = this.formGroup.value as FormUser;
+    const newUser: User = {
+      name: formUser.name,
+      age: formUser.age,
+      weight: formUser.weight,
+      friendNames: this.selectedUserFriendNames
+    };
+
+    // Emit the new user
+    this.userSaved.emit(newUser);
+  }
+
+  onClickReset(evt: Event): void {
+    this.resetForm();
+    evt.preventDefault(); // don't submit
   }
 
   // private methods: init
@@ -72,13 +128,25 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
       friendNameInput: new FormControl({ value: '', disabled: true })
     });
 
+    // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe(this.onFormGroupStatusChanged.bind(this));
+
+    // React to friend name input value changes
+    this.formGroup.controls['friendNameInput'].valueChanges.pipe(
+      distinctUntilChanged(),
+      filter(friendNameValue => !!friendNameValue),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(this.onFriendNameValueChanged.bind(this));
   }
 
   private onFormGroupStatusChanged(status: string): void {
     this.updateIsFormValid();
+  }
+
+  private onFriendNameValueChanged(friendNameValue: string): void {
+    this.friendNameInputValueChangeSubject.next(friendNameValue);
   }
 
   // private methods: friend name input
@@ -94,10 +162,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getShouldEnableFriendNameInput(): boolean {
     // Enable when friends exist to add
-    return (
-      Array.isArray(this.allFriendNames) &&
-      (this.allFriendNames.length > 0)
-    );
+    return this.shouldEnableFriendInput;
   }
 
   // private methods: helper
@@ -108,6 +173,12 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private isControlValid(c: AbstractControl): boolean {
     return !c.invalid && !c.pending;
+  }
+
+  private resetForm(): void {
+    this.selectedUserFriendNames = [];
+    this.formElem.resetForm();
+    this.formGroup.markAsUntouched();
   }
 
 }

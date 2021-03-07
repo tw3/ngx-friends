@@ -2,4 +2,8 @@
   User Report
 </h2>
 
-<tw3-user-form></tw3-user-form>
+<tw3-user-form
+  #userForm
+  [friendNameOptions$]="friendAutocompleteOptions$"
+  (userSaved)="onUserSaved($event)">
+</tw3-user-form>
