@@ -30,8 +30,8 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // Would prefer to execute this in buildForm() but there seems to be be
-    // a bug in Angular
+    // Would prefer to execute this in buildForm() but there seems to be a bug
+    // in Angular that doesn't allow this
     this.enableOrDisableFriendNameInput();
   }
 
