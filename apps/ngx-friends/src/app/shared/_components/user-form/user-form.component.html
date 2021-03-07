@@ -116,12 +116,12 @@
           <button
             mat-raised-button
             color="primary"
-            [disabled]="!isFormValid || isFormSaving">
+            [disabled]="!isFormValid || isSaving">
             Save
           </button>
           <button
             mat-raised-button
-            [disabled]="isFormSaving"
+            [disabled]="isSaving"
             (click)="onClickReset($event)">
             Reset
           </button>
@@ -129,7 +129,7 @@
 
         <mat-card-footer>
           <mat-progress-bar
-            *ngIf="isFormSaving"
+            *ngIf="isSaving"
             mode="indeterminate">
           </mat-progress-bar>
         </mat-card-footer>

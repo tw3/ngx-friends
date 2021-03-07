@@ -16,6 +16,7 @@ import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { User } from '../../_models/user.model';
+import { FormState } from '../../_models/form-state.enum';
 
 interface FormUser {
   name: string;
@@ -41,9 +42,10 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   formGroup: FormGroup;
   isFormValid: boolean;
-  isFormSaving = false;
 
   selectedUserFriendNames: string[] = []; // ['John', 'Sally'];
+
+  private formState: FormState;
 
   @ViewChild('formElem')
   private readonly formElem: HTMLFormElement;
@@ -63,6 +65,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   ngOnChanges(): void {
+    this.setFormState(FormState.READY);
     this.buildForm();
   }
 
@@ -75,6 +78,22 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  get isReady(): boolean {
+    return this.formState === FormState.READY;
+  }
+
+  get isSaving(): boolean {
+    return this.formState === FormState.SAVING;
+  }
+
+  get isSaved(): boolean {
+    return this.formState === FormState.SAVED;
+  }
+
+  get isError(): boolean {
+    return this.formState === FormState.ERROR;
   }
 
   onRemovedUserFriend(friendName: string): void {
@@ -110,6 +129,24 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   onClickReset(evt: Event): void {
     this.resetForm();
     evt.preventDefault(); // don't submit
+  }
+
+  setFormState(formState: FormState, message?: string): void {
+    this.formState = formState;
+
+    // Enable/disable form
+    if (this.formGroup) {
+      if (this.formState === FormState.SAVING) {
+        this.formGroup.disable();
+        return;
+      }
+      this.formGroup.enable();
+    }
+
+    // Reset the form if appropriate
+    if (this.formState === FormState.SAVED) {
+      this.resetForm();
+    }
   }
 
   // private methods: init

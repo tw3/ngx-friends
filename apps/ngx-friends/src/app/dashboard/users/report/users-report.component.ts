@@ -3,6 +3,8 @@ import { User } from '../../../shared/_models/user.model';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserFormComponent } from '../../../shared/_components/user-form/user-form.component';
+import { FormState } from '../../../shared/_models/form-state.enum';
+import { NotificationService } from '../../../core/_services/notification-service/notification.service';
 
 @Component({
   selector: 'tw3-report',
@@ -17,7 +19,9 @@ export class UsersReportComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly friendAutocompleteOptionsSubject: Subject<string[]> = new Subject<string[]>();
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor() {
+  constructor(
+    private readonly notificationService: NotificationService
+  ) {
     this.friendAutocompleteOptions$ = this.friendAutocompleteOptionsSubject.asObservable();
   }
 
@@ -34,7 +38,12 @@ export class UsersReportComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onUserSaved(user: User): void {
-    console.log('UsersReportComponent.onUserSaved()', user);
+    this.userFormComponent.setFormState(FormState.SAVING);
+    // Simulate wait for now
+    setTimeout(() => {
+      this.userFormComponent.setFormState(FormState.SAVED);
+      this.notificationService.showSuccessToast('User saved successfully');
+    }, 2000);
   }
 
   private initListenForAutocompleteTyping(): void {
