@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'tw3-user-form',
@@ -9,8 +10,14 @@ import { Subject } from 'rxjs';
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit, OnDestroy {
+  @Input() allFriendNames: string[];
+
   formGroup: FormGroup;
   isFormValid: boolean;
+  shouldDisableFriendNameInput: boolean;
+
+  userFriendNames: string[] = []; // ['John', 'Sally'];
+  friendNameAutocompleteOptions: string[] = []; // ['Abraham', 'Beth'];
 
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -26,6 +33,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  // Friends input
+
+  onRemovedUserFriend(friendName: string): void {
+    console.log('TODO: onRemovedUserFriend', friendName);
+  }
+
+  onAvailableFriendSelected(event: MatAutocompleteSelectedEvent): void {
+    console.log('TODO: onAvailableFriendSelected', event);
+  }
+
+  // private methods: init
+
   private buildForm(): void {
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -40,17 +59,45 @@ export class UserFormComponent implements OnInit, OnDestroy {
         Validators.min(0),
         Validators.pattern('^[0-9]+$'),
         Validators.maxLength(3)
-      ]))
+      ])),
+      friendNameInput: new FormControl({ value: '', disabled: true })
     });
+
+    this.enableOrDisableFriendNameInput();
 
     this.formGroup.statusChanges.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe(this.onFormGroupStatusChanged.bind(this));
+
+    this.formGroup.controls['friendNameInput'].disable();
   }
 
   private onFormGroupStatusChanged(status: string): void {
     this.updateIsFormValid();
   }
+
+  // private methods: friend name input
+
+  private enableOrDisableFriendNameInput(): void {
+    const shouldEnable = this.getShouldEnableFriendNameInput();
+    if (shouldEnable) {
+      this.formGroup.controls['friendNameInput'].enable();
+      console.log('enabled');
+    } else {
+      this.formGroup.controls['friendNameInput'].disable();
+      console.log('disabled', this.formGroup.controls['friendNameInput']);
+    }
+  }
+
+  private getShouldEnableFriendNameInput(): boolean {
+    // Enable when friends exist to add
+    return (
+      Array.isArray(this.allFriendNames) &&
+      (this.allFriendNames.length > 0)
+    );
+  }
+
+  // private methods: helper
 
   private updateIsFormValid(): void {
     this.isFormValid = this.isControlValid(this.formGroup);

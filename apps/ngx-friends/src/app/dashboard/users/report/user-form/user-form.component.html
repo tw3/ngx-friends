@@ -20,44 +20,87 @@
           <div class="input-form">
             <div class="row">
 
+              <!-- Name -->
               <div class="col-xs-12">
                 <mat-form-field color="accent">
                   <mat-label>Name</mat-label>
                   <input
-                    aria-label="Name"
-                    formControlName="name"
                     matInput
-                    placeholder="Name" />
+                    formControlName="name"
+                    placeholder="Name"
+                    aria-label="Name" />
                 </mat-form-field>
               </div>
 
+              <!-- Age -->
               <div class="col-xs-6">
                 <mat-form-field color="accent">
                   <mat-label>Age</mat-label>
                   <input
-                    aria-label="Age"
-                    formControlName="age"
                     matInput
+                    formControlName="age"
                     maxlength="3"
-                    placeholder="Age" />
+                    placeholder="Age"
+                    aria-label="Age" />
                   <span matSuffix>
                     years old
                   </span>
                 </mat-form-field>
               </div>
 
+              <!-- Weight -->
               <div class="col-xs-6">
                 <mat-form-field color="accent">
                   <mat-label>Weight</mat-label>
                   <input
-                    aria-label="Weight"
-                    formControlName="weight"
                     matInput
+                    formControlName="weight"
                     maxlength="3"
-                    placeholder="Weight" />
+                    placeholder="Weight"
+                    aria-label="Weight" />
                   <span matSuffix>
                     lbs
                   </span>
+                </mat-form-field>
+              </div>
+
+              <!-- Friends -->
+              <div class="col-xs-12">
+                <mat-form-field color="accent">
+                  <mat-label>Friends</mat-label>
+                  <mat-chip-list
+                    #userFriendNamesChipList
+                    aria-label="Friend selection">
+                    <!-- chips for user friend names -->
+                    <mat-chip
+                      *ngFor="let userFriendName of userFriendNames"
+                      [removable]="true"
+                      (removed)="onRemovedUserFriend(userFriendName)">
+                      {{ userFriendName }}
+                      <mat-icon matChipRemove>
+                        cancel
+                      </mat-icon>
+                    </mat-chip>
+                    <!-- text input for new friend name -->
+                    <input
+                      matInput
+                      [matAutocomplete]="availableFriendNamesAutocomplete"
+                      [matChipInputFor]="userFriendNamesChipList"
+                      formControlName="friendNameInput"
+                      matChipInputAddOnBlur="false"
+                      placeholder="Friends"
+                      aria-label="Friends" />
+                  </mat-chip-list>
+                  <!-- autocomplete dropdown for available friend names -->
+                  <mat-autocomplete
+                    #availableFriendNamesAutocomplete="matAutocomplete"
+                    (optionSelected)="onAvailableFriendSelected($event)">
+                    <mat-option
+                      *ngFor="let friendNameOption of friendNameAutocompleteOptions"
+                      [value]="friendNameOption">
+                      {{ friendNameOption }}
+                    </mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
               </div>
 
