@@ -58,7 +58,9 @@ export class UsersService {
         // which is not always the case in reality haha
         newUser.friendNames.forEach((friendName: string) => {
           const friendUser: User = this.getUserByName(friendName);
-          friendUser.friendNames.push(newUser.name);
+          if (friendUser) {
+            friendUser.friendNames.push(newUser.name);
+          }
         });
 
         // Update friendsGraph
