@@ -8,9 +8,7 @@ export interface ForceDirectedGraphLink {
   target: ForceDirectedGraphLinkTarget
 }
 
-export interface ForceDirectedGraphLinkSource {
-  name: string
-}
+export type ForceDirectedGraphLinkSource = string;
 
 export type ForceDirectedGraphLinkTarget = string;
 

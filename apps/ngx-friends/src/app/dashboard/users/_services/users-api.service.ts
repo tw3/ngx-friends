@@ -9,47 +9,16 @@ import { deepCloneObj } from '../../../shared/_util/misc_util';
 })
 export class UsersApiService {
   private users: UserEntity[];
-  private readonly friendsGraph: ForceDirectedGraph;
+  private friendsGraph: ForceDirectedGraph;
 
   constructor() {
-    // this.users = [];
-    // this.friendsGraph = {
-    //   links: [],
-    //   nodes: []
-    // };
-
-    this.users = [
-      {
-        name: 'abc',
-        age: 12,
-        weight: 34,
-        friendNames: ['def']
-      },
-      {
-        name: 'def',
-        age: 89,
-        weight: 77,
-        friendNames: ['abc']
-      }
-    ];
+    this.users = [];
     this.friendsGraph = {
-      links: [
-        {
-          source: {
-            name: 'abc'
-          },
-          target: 'def'
-        }
-      ],
-      nodes: [
-        {
-          value: 'abc'
-        },
-        {
-          value: 'def'
-        }
-      ]
+      links: [],
+      nodes: []
     };
+
+    // this.initDummyData();
   }
 
   addUser(newUser: UserEntity): Observable<UserEntity[]> {
@@ -80,9 +49,7 @@ export class UsersApiService {
         // Update friendsGraph
         newUser.friendNames.forEach((friendName: string) => {
           const newGraphLink: ForceDirectedGraphLink = {
-            source: {
-              name: newUser.name
-            },
+            source: newUser.name,
             target: friendName
           };
           this.friendsGraph.links = [...this.friendsGraph.links, newGraphLink];
@@ -151,4 +118,36 @@ export class UsersApiService {
     return this.users.find((user: UserEntity): boolean => user.name === name);
   }
 
+  private initDummyData(): void {
+    this.users = [
+      {
+        name: 'abc',
+        age: 12,
+        weight: 34,
+        friendNames: ['def']
+      },
+      {
+        name: 'def',
+        age: 89,
+        weight: 77,
+        friendNames: ['abc']
+      }
+    ];
+    this.friendsGraph = {
+      links: [
+        {
+          source: 'abc',
+          target: 'def'
+        }
+      ],
+      nodes: [
+        {
+          value: 'abc'
+        },
+        {
+          value: 'def'
+        }
+      ]
+    };
+  }
 }
