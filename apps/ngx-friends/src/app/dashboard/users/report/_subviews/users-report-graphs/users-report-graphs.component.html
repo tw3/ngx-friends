@@ -1,23 +1,23 @@
-<tw3-horizontal-bar-chart
+<ngf-horizontal-bar-chart
   *ngIf="hasUserAgeResults"
   [results]="userAgeResults"
   title="User Ages"
   xAxisLabel="Age"
   yAxisLabel="Name">
-</tw3-horizontal-bar-chart>
+</ngf-horizontal-bar-chart>
 
-<tw3-horizontal-bar-chart
+<ngf-horizontal-bar-chart
   *ngIf="hasUserWeightResults"
   [results]="userWeightResults"
   title="User Weights"
   xAxisLabel="Weight"
   yAxisLabel="Name">
-</tw3-horizontal-bar-chart>
+</ngf-horizontal-bar-chart>
 
-<tw3-bubble-chart
+<ngf-bubble-chart
   *ngIf="hasAgeWeightResults"
   [results]="ageWeightResults"
   title="Age vs Weight (# Friends)"
   xAxisLabel="Age"
   yAxisLabel="Weight">
-</tw3-bubble-chart>
+</ngf-bubble-chart>

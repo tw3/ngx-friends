@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'tw3-report',
+  selector: 'ngf-report',
   templateUrl: './users-report.component.html',
   styleUrls: ['./users-report.component.scss']
 })

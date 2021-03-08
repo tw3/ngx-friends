@@ -20,7 +20,7 @@ import { FormState } from '../../_models/form-state.enum';
 import { RandomUtil } from '../../_util/random_util';
 
 @Component({
-  selector: 'tw3-user-form',
+  selector: 'ngf-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

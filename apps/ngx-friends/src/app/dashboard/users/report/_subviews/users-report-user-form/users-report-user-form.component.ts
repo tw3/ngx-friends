@@ -7,7 +7,7 @@ import * as UsersSelectors from '../../../+state/users.selectors';
 import * as UsersActions from '../../../+state/users.actions';
 
 @Component({
-  selector: 'tw3-users-report-user-form',
+  selector: 'ngf-users-report-user-form',
   templateUrl: './users-report-user-form.component.html',
   styleUrls: ['./users-report-user-form.component.scss']
 })

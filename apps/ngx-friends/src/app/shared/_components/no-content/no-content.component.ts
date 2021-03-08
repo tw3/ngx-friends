@@ -1,7 +1,7 @@
 ﻿import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'tw3-no-content',
+  selector: 'ngf-no-content',
   templateUrl: './no-content.component.html',
   styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush

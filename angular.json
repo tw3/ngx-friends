@@ -36,7 +36,7 @@
       "projectType": "application",
       "root": "apps/ngx-friends",
       "sourceRoot": "apps/ngx-friends/src",
-      "prefix": "tw3",
+      "prefix": "ngf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",

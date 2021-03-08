@@ -10,7 +10,7 @@ import * as UsersActions from '../../../+state/users.actions';
 import * as UsersSelectors from '../../../+state/users.selectors';
 
 @Component({
-  selector: 'tw3-users-report-graphs',
+  selector: 'ngf-users-report-graphs',
   templateUrl: './users-report-graphs.component.html',
   styleUrls: ['./users-report-graphs.component.scss']
 })

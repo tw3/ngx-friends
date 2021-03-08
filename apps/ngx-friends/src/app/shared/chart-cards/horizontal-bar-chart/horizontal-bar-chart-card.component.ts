@@ -5,7 +5,7 @@ import { chartColorScheme } from '../chart-color-scheme';
 import { HorizontalBarChartDataPoint } from './horizontal-bar-chart-data-point.model';
 
 @Component({
-  selector: 'tw3-horizontal-bar-chart',
+  selector: 'ngf-horizontal-bar-chart',
   templateUrl: './horizontal-bar-chart-card.component.html',
   styleUrls: ['./horizontal-bar-chart-card.component.scss']
 })
