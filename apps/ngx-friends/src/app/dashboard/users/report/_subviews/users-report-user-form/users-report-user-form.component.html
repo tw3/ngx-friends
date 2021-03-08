@@ -1,6 +1,6 @@
 <tw3-user-form
   #userForm
   [allUsers]="allUsers$ | async"
-  [formState]="formState"
+  [formState]="formState$ | async"
   (userSaved)="onUserSaved($event)">
 </tw3-user-form>

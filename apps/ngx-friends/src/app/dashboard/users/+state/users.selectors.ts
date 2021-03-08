@@ -9,7 +9,7 @@ export const selectUsers = createSelector(
   (users: UsersState) => users.users
 );
 
-export const selectIsAddingUser = createSelector(
+export const selectFormState = createSelector(
   selectFeature,
-  (users: UsersState) => users.isAddingUser
+  (users: UsersState) => users.formState
 );
