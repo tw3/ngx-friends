@@ -1,7 +1,5 @@
 <tw3-user-form
   #userForm
-  [user]="user"
-  [friendNameOptions$]="friendAutocompleteOptions$"
-  (userSaved)="onUserSaved($event)"
-  (requestRandomUser)="onRequestRandomUser()">
+  [allUsers]="allUsers$ | async"
+  (userSaved)="onUserSaved($event)">
 </tw3-user-form>

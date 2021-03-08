@@ -1,40 +1,31 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { UserFormComponent } from '../../../../../shared/_components/user-form/user-form.component';
 import { UsersService } from '../../../_services/users.service';
 import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
 import { UserEntity } from '../../../../../shared/_models/user.model';
 import { FormState } from '../../../../../shared/_models/form-state.enum';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
-import { RandomUtil } from '../../../../../shared/_util/random_util';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'tw3-users-report-user-form',
   templateUrl: './users-report-user-form.component.html',
   styleUrls: ['./users-report-user-form.component.scss']
 })
-export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDestroy {
-  readonly friendAutocompleteOptions$: Observable<string[]>;
-
-  user: UserEntity = null;
-
+export class UsersReportUserFormComponent implements OnInit, OnDestroy {
+  allUsers$: Observable<UserEntity[]>;
   @ViewChild('userForm') private readonly userFormComponent: UserFormComponent;
 
-  private readonly friendAutocompleteOptionsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly usersService: UsersService,
     private readonly notificationService: NotificationService
   ) {
-    this.friendAutocompleteOptions$ = this.friendAutocompleteOptionsSubject.asObservable();
+    this.allUsers$ = this.usersService.users$;
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.initListenForAutocompleteTyping();
   }
 
   ngOnDestroy(): void {
@@ -49,43 +40,6 @@ export class UsersReportUserFormComponent implements OnInit, AfterViewInit, OnDe
     ).subscribe({
       next: () => this.onUserAddSuccess(user),
       error: (error: Error) => this.onUserAddError(error, user)
-    });
-  }
-
-  onRequestRandomUser(): void {
-    this.usersService.getUsers().pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((users: UserEntity[]) => {
-      const userNames: string[] = users.map(u => u.name);
-      this.user = {
-        name: RandomUtil.stringGen(),
-        age: RandomUtil.getRandomInt(1, 100),
-        weight: RandomUtil.getRandomInt(8, 400),
-        friendNames: RandomUtil.getRandomArraySubset(userNames)
-      };
-    });
-  }
-
-
-  private initListenForAutocompleteTyping(): void {
-    this.userFormComponent.friendNameInputValue$.pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe({
-      next: this.onFriendNameInputValueChange.bind(this)
-    });
-  }
-
-  private onFriendNameInputValueChange(searchText: string): void {
-    this.userFormComponent.selectedFriendNames$.pipe(
-      switchMap((selectedFriendNames: string[]) => {
-        return this.usersService.getMatchingUsers(searchText, selectedFriendNames);
-      }),
-      take(1)
-    ).subscribe({
-      next: (users: UserEntity[]) => {
-        const userNames: string[] = users.map(u => u.name);
-        this.friendAutocompleteOptionsSubject.next(userNames);
-      }
     });
   }
 

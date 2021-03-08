@@ -100,7 +100,7 @@
                     #availableFriendNamesAutocomplete="matAutocomplete"
                     (optionSelected)="onAvailableFriendSelected($event); friendNameInput.value = ''">
                     <mat-option
-                      *ngFor="let friendNameOption of friendNameOptions$ | async"
+                      *ngFor="let friendNameOption of friendNameAutocompleteOptions"
                       [value]="friendNameOption">
                       {{ friendNameOption }}
                     </mat-option>
@@ -122,7 +122,7 @@
           <button
             mat-raised-button
             [disabled]="isFormBusy"
-            (click)="onClickPopulateRandomData()">
+            (click)="onClickPopulateRandomData($event)">
             Populate Random Data
             <mat-icon>shuffle</mat-icon>
           </button>

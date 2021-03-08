@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -14,10 +13,11 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Subject } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { UserEntity } from '../../_models/user.model';
 import { FormState } from '../../_models/form-state.enum';
+import { RandomUtil } from '../../_util/random_util';
 
 interface FormUser {
   name: string;
@@ -32,64 +32,38 @@ interface FormUser {
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input() user: UserEntity;
-  @Input() shouldEnableFriendInput = true;
-  @Input() friendNameOptions$: Observable<string[]>;
-
+export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() allUsers: UserEntity[];
   @Output() readonly userSaved: EventEmitter<UserEntity> = new EventEmitter<UserEntity>();
-  @Output() readonly requestRandomUser: EventEmitter<void> = new EventEmitter<void>();
-
-  // public observables
-  readonly friendNameInputValue$: Observable<string>;
-  readonly selectedFriendNames$: Observable<string[]>;
 
   formGroup: FormGroup;
   isFormValid: boolean;
+  selectedFriendNames: string[] = [];
+  friendNameAutocompleteOptions: string[];
+
+  @ViewChild('formElem') private readonly formElem: HTMLFormElement;
+  @ViewChild('friendNameInput') private readonly friendNameInputElem: ElementRef;
+  private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   private formState: FormState;
 
-  @ViewChild('formElem')
-  private readonly formElem: HTMLFormElement;
-  @ViewChild('friendNameInput')
-  private readonly friendNameInputElem: ElementRef;
-  @ViewChild('friendNameInput', { read: MatAutocompleteTrigger })
-  private readonly autoCompleteTrigger: MatAutocompleteTrigger;
-
-  private readonly friendNameInputValueSubject: Subject<string> = new Subject<string>();
-  private readonly selectedFriendNamesSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
-
-  private _selectedFriendNames: string[] = [];
-
   constructor() {
-    this.friendNameInputValue$ = this.friendNameInputValueSubject.asObservable();
-    this.selectedFriendNames$ = this.selectedFriendNamesSubject.asObservable();
   }
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.user && changes.user.currentValue && !changes.user.firstChange) {
-      this.formGroup.patchValue({
-        name: this.user.name,
-        age: this.user.age,
-        weight: this.user.weight,
-        friendNameInput: ''
-      });
-      this.selectedFriendNames = this.user.friendNames;
-      this.setFormState(FormState.READY);
-      return;
-    }
     this.setFormState(FormState.READY);
     this.buildForm();
   }
 
-  ngAfterViewInit(): void {
-    // Would prefer to execute this in buildForm() but there seems to be a bug
-    // in Angular that doesn't allow this
-    this.enableOrDisableFriendNameInput();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.formGroup || !changes['allFriendNames']) {
+      return;
+    }
+    if (this.friendsExist) {
+      this.formGroup.controls['friendNameInput'].enable();
+    } else {
+      this.formGroup.controls['friendNameInput'].disable();
+    }
   }
 
   ngOnDestroy(): void {
@@ -97,13 +71,8 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.ngUnsubscribe.complete();
   }
 
-  get selectedFriendNames(): string[] {
-    return this._selectedFriendNames;
-  }
-
-  set selectedFriendNames(selectedFriendNames: string[]) {
-    this._selectedFriendNames = selectedFriendNames;
-    this.selectedFriendNamesSubject.next(this.selectedFriendNames);
+  get friendsExist(): boolean {
+    return (this.allUsers != null) && this.allUsers.length > 0;
   }
 
   get isFormBusy(): boolean {
@@ -113,9 +82,15 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     );
   }
 
-  onClickPopulateRandomData(): void {
-    this.setFormState(FormState.LOADING);
-    this.requestRandomUser.emit();
+  onClickPopulateRandomData(evt: Event): void {
+    this.formGroup.patchValue({
+      name: RandomUtil.stringGen(),
+      age: RandomUtil.getRandomInt(1, 100),
+      weight: RandomUtil.getRandomInt(8, 400),
+      friendNameInput: ''
+    });
+    this.selectedFriendNames = RandomUtil.getRandomArraySubset(this.allUsers).map(u => u.name);
+    evt.preventDefault(); // don't submit
   }
 
   onRemovedUserFriend(friendName: string): void {
@@ -174,10 +149,10 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   private buildForm(): void {
     this.formGroup = new FormGroup({
-      name: new FormControl(this.user && this.user.name,
+      name: new FormControl('',
         [Validators.required]
       ),
-      age: new FormControl(this.user && this.user.age,
+      age: new FormControl('',
         Validators.compose([
           Validators.required,
           Validators.min(0),
@@ -185,7 +160,7 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
           Validators.maxLength(3)
         ])
       ),
-      weight: new FormControl(this.user && this.user.weight,
+      weight: new FormControl('',
         Validators.compose([
           Validators.required,
           Validators.min(0),
@@ -195,8 +170,6 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       ),
       friendNameInput: new FormControl()
     });
-
-    this.selectedFriendNames = this.user && this.user.friendNames || [];
 
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
@@ -217,24 +190,36 @@ export class UserFormComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.updateIsFormValid();
   }
 
-  private onFriendNameValueChanged(friendNameValue: string): void {
-    this.friendNameInputValueSubject.next(friendNameValue);
-  }
-
   // private methods: friend name input
 
-  private enableOrDisableFriendNameInput(): void {
-    const shouldEnable = this.getShouldEnableFriendNameInput();
-    if (shouldEnable) {
-      this.formGroup.controls['friendNameInput'].enable();
-    } else {
-      this.formGroup.controls['friendNameInput'].disable();
+  private onFriendNameValueChanged(friendNameInputText?: string): void {
+    if (friendNameInputText === undefined) {
+      friendNameInputText = this.friendNameInputElem.nativeElement.value;
     }
+    this.friendNameAutocompleteOptions = friendNameInputText ?
+      this.getMatchingAvailableFriendNames(friendNameInputText) :
+      this.getAvailableFriendNames().slice();
   }
 
-  private getShouldEnableFriendNameInput(): boolean {
-    // Enable when friends exist to add
-    return this.shouldEnableFriendInput;
+  private getMatchingAvailableFriendNames(inputText: string): string[] {
+    inputText = inputText.toLowerCase();
+    return this.getAvailableFriendNames()
+      .filter((availableFriendName: string) => {
+        availableFriendName = availableFriendName.toLowerCase();
+        const isOptionMatch: boolean = availableFriendName.startsWith(inputText);
+        return isOptionMatch;
+      });
+  }
+
+  private getAvailableFriendNames(): string[] {
+    if (!this.allUsers) {
+      return [];
+    }
+    return this.allUsers
+      .map((user: UserEntity) => user.name)
+      .filter((userName: string) => {
+        return !this.selectedFriendNames.includes(userName);
+      });
   }
 
   // private methods: helper
