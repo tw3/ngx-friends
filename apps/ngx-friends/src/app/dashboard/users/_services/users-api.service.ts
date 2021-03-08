@@ -8,7 +8,7 @@ import { deepCloneObj } from '../../../shared/_util/misc_util';
   providedIn: 'root'
 })
 export class UsersApiService {
-  private readonly users: UserEntity[];
+  private users: UserEntity[];
   private readonly friendsGraph: ForceDirectedGraph;
 
   constructor() {
@@ -65,7 +65,7 @@ export class UsersApiService {
         }
 
         // Add new user to list of users
-        this.users.push(newUser);
+        this.users = [...this.users, deepCloneObj(newUser)];
 
         // Add new user's name to the friendNames for his friends
         // This of course assumes that friendships are always bi-directional
@@ -73,7 +73,7 @@ export class UsersApiService {
         newUser.friendNames.forEach((friendName: string) => {
           const friendUser: UserEntity = this.getUserByName(friendName);
           if (friendUser) {
-            friendUser.friendNames.push(newUser.name);
+            friendUser.friendNames = [...friendUser.friendNames, newUser.name];
           }
         });
 
@@ -85,11 +85,11 @@ export class UsersApiService {
             },
             target: friendName
           };
-          this.friendsGraph.links.push(newGraphLink);
+          this.friendsGraph.links = [...this.friendsGraph.links, newGraphLink];
         });
-        this.friendsGraph.nodes.push({
+        this.friendsGraph.nodes = [...this.friendsGraph.nodes, {
           value: newUser.name
-        });
+        }];
 
         // Trigger next() and complete()
         observer.next(deepCloneObj(this.users));
@@ -125,7 +125,7 @@ export class UsersApiService {
             const lcSearchText = searchText.toLowerCase();
             return lcUserName.includes(lcSearchText);
           });
-        observer.next(matchingUsers);
+        observer.next(deepCloneObj(matchingUsers));
         observer.complete();
       }, 20);
     });
@@ -135,7 +135,7 @@ export class UsersApiService {
     return new Observable<ForceDirectedGraph>((observer: Observer<ForceDirectedGraph>) => {
       // This is where you'd normally have an httpClient.get() call, this timeout simulates it
       window.setTimeout(() => {
-        observer.next(this.friendsGraph);
+        observer.next(deepCloneObj(this.friendsGraph));
         observer.complete();
       }, 1000);
     });

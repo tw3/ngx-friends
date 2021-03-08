@@ -1,21 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UsersApiService } from '../_services/users-api.service';
-import * as UserActions from './users.actions';
+import * as UsersActions from './users.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { UserEntity } from '../../../shared/_models/user.model';
 import { NotificationService } from '../../../core/_services/notification-service/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of as observableOf } from 'rxjs';
+import { ForceDirectedGraph } from '../../../shared/_models/force-directed-graph.model';
 
 @Injectable()
 export class UsersEffects {
-  loadUsers$ = createEffect(() => {
+  fetchUsers$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(UserActions.fetchUsersFromUserReports),
+      ofType(UsersActions.fetchUsersFromUserReports),
       mergeMap(() => {
         return this.usersApiService.getAllUsers().pipe(
-          map((users: UserEntity[]) => UserActions.usersFetchedFromUserReportsSuccess({ users }))
+          map((users: UserEntity[]) => UsersActions.usersFetchedFromUserReportsSuccess({ users }))
+        );
+      })
+    );
+  });
+
+  fetchFriendsGraph$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(UsersActions.fetchFriendsGraphFromUserReports),
+      mergeMap(() => {
+        return this.usersApiService.getFriendsGraph().pipe(
+          map((friendsGraph: ForceDirectedGraph) => UsersActions.friendsGraphFetchedFromUserReportsSuccess({ friendsGraph }))
         );
       })
     );
@@ -23,17 +35,17 @@ export class UsersEffects {
 
   requestAddUser$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(UserActions.requestAddUserFromUserReports),
+      ofType(UsersActions.requestAddUserFromUserReports),
       mergeMap(({ user }: { user: UserEntity }) => {
         return this.usersApiService.addUser(user).pipe(
           map((users: UserEntity[]) => {
             this.notificationService.showSuccessToast(`User '${user.name}' added successfully`);
-            return UserActions.userAddedFromUserReportsSuccess({ user });
+            return UsersActions.userAddedFromUserReportsSuccess({ user });
           }),
           catchError((error: HttpErrorResponse) => {
             const errorMessage: string = error.message;
             this.notificationService.showErrorToast(`User '${user.name}' add failed: ${errorMessage}`);
-            return observableOf(UserActions.userAddedFromUserReportsFailed({ error: errorMessage }));
+            return observableOf(UsersActions.userAddedFromUserReportsFailed({ error: errorMessage }));
           })
         );
       })

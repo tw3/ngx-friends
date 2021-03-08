@@ -9,6 +9,11 @@ export const selectUsers = createSelector(
   (users: UsersState) => users.users
 );
 
+export const selectFriendsGraph = createSelector(
+  selectFeature,
+  (users: UsersState) => users.friendsGraph
+);
+
 export const selectFormState = createSelector(
   selectFeature,
   (users: UsersState) => users.formState

@@ -2,14 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HorizontalBarChartDataPoint } from '../../../../../shared/chart-cards/horizontal-bar-chart/horizontal-bar-chart-data-point.model';
 import { BubbleChartDataPoint } from '../../../../../shared/chart-cards/bubble-chart/bubble-chart-data-point.model';
 import { ForceDirectedGraph } from '../../../../../shared/_models/force-directed-graph.model';
-import { UsersService } from '../../../_services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { UserEntity } from '../../../../../shared/_models/user.model';
 import { Observable, Subject } from 'rxjs';
-import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
 import { select, Store } from '@ngrx/store';
-import { fetchUsersFromUserReports } from '../../../+state/users.actions';
-import { selectUsers } from '../../../+state/users.selectors';
+import * as UsersActions from '../../../+state/users.actions';
+import * as UsersSelectors from '../../../+state/users.selectors';
 
 @Component({
   selector: 'tw3-users-report-graphs',
@@ -26,21 +24,22 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
   };
 
   private allUsers$: Observable<UserEntity[]>;
+  private friendsGraph$: Observable<ForceDirectedGraph>;
 
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private readonly store: Store,
-    private readonly usersService: UsersService,
-    private readonly notificationService: NotificationService
+    private readonly store: Store
   ) {
-    this.allUsers$ = this.store.pipe(select(selectUsers));
+    this.allUsers$ = this.store.pipe(select(UsersSelectors.selectUsers));
+    this.friendsGraph$ = this.store.pipe(select(UsersSelectors.selectFriendsGraph));
   }
 
   ngOnInit(): void {
-    this.initListenForUsersChanges();
+    this.initListenForUsersChange();
+    this.initListenForFriendsGraphChange();
 
-    this.store.dispatch(fetchUsersFromUserReports());
+    this.store.dispatch(UsersActions.fetchUsersFromUserReports());
   }
 
   ngOnDestroy(): void {
@@ -64,11 +63,19 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     return !!this.friendsGraph && !!this.friendsGraph.nodes && this.friendsGraph.nodes.length > 0;
   }
 
-  private initListenForUsersChanges(): void {
+  private initListenForUsersChange(): void {
     this.allUsers$.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
       next: this.handleUsersChange.bind(this)
+    });
+  }
+
+  private initListenForFriendsGraphChange(): void {
+    this.friendsGraph$.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe({
+      next: this.handleGetFriendsGraphSuccess.bind(this)
     });
   }
 
@@ -99,25 +106,12 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
       });
     });
 
-    // Get the friendGraph
-    this.usersService.getFriendsGraph().pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe({
-      next: this.handleGetFriendsGraphSuccess.bind(this),
-      error: this.handleGetFriendsGraphError.bind(this)
-    });
-  }
-
-  private handleGetUsersError(error: Error): void {
-    this.notificationService.showErrorToast(error.message);
+    // Re-fetch the friendsGraph
+    this.store.dispatch(UsersActions.fetchFriendsGraphFromUserReports());
   }
 
   private handleGetFriendsGraphSuccess(friendsGraph: ForceDirectedGraph): void {
     this.friendsGraph = friendsGraph;
-  }
-
-  private handleGetFriendsGraphError(error: Error): void {
-    this.notificationService.showErrorToast(error.message);
   }
 
 }
