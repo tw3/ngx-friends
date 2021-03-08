@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { UserFormComponent } from '../../../../../shared/_components/user-form/user-form.component';
 import { UserEntity } from '../../../../../shared/_models/user.model';
 import { FormState } from '../../../../../shared/_models/form-state.enum';
 import { select, Store } from '@ngrx/store';
@@ -20,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class UsersReportUserFormComponent implements OnInit, OnDestroy {
   allUsers$: Observable<UserEntity[]>;
-  @ViewChild('userForm') private readonly userFormComponent: UserFormComponent;
+  formState: FormState = FormState.READY;
 
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -49,7 +48,7 @@ export class UsersReportUserFormComponent implements OnInit, OnDestroy {
       takeUntil(this.ngUnsubscribe)
     ).subscribe((isLoading: boolean) => {
       if (isLoading) {
-        this.userFormComponent.setFormState(FormState.SAVING);
+        this.formState = FormState.SAVING;
       }
     });
 
@@ -57,14 +56,14 @@ export class UsersReportUserFormComponent implements OnInit, OnDestroy {
       ofType(userAddedFromUserReportsSuccess),
       takeUntil(this.ngUnsubscribe)
     ).subscribe((action: { user: UserEntity }) => {
-      this.userFormComponent.setFormState(FormState.SAVED);
+      this.formState = FormState.SAVED;
     });
 
     this.actions$.pipe(
       ofType(userAddedFromUserReportsFailed),
       takeUntil(this.ngUnsubscribe)
     ).subscribe((action: { error: string }) => {
-      this.userFormComponent.setFormState(FormState.ERROR);
+      this.formState = FormState.ERROR;
     });
   }
 }

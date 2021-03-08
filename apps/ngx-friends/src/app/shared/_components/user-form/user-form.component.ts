@@ -34,6 +34,8 @@ interface FormUser {
 })
 export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() allUsers: UserEntity[];
+  @Input() formState: FormState = FormState.READY;
+
   @Output() readonly userSaved: EventEmitter<UserEntity> = new EventEmitter<UserEntity>();
 
   formGroup: FormGroup;
@@ -45,34 +47,29 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('friendNameInput') private readonly friendNameInputElem: ElementRef;
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  private formState: FormState;
-
   constructor() {
   }
 
   ngOnInit(): void {
-    this.setFormState(FormState.READY);
     this.buildForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.formGroup || !changes['allFriendNames']) {
-      return;
+    if (changes['allUsers'] && this.formGroup) {
+      if (this.getCanAddFriends()) {
+        this.formGroup.controls['friendNameInput'].enable();
+      } else {
+        this.formGroup.controls['friendNameInput'].disable();
+      }
     }
-    if (this.friendsExist) {
-      this.formGroup.controls['friendNameInput'].enable();
-    } else {
-      this.formGroup.controls['friendNameInput'].disable();
+    if (changes['formState']) {
+      this.setFormState(this.formState);
     }
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  get friendsExist(): boolean {
-    return (this.allUsers != null) && this.allUsers.length > 0;
   }
 
   get isFormBusy(): boolean {
@@ -125,24 +122,6 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   onClickReset(evt: Event): void {
     this.resetForm();
     evt.preventDefault(); // don't submit
-  }
-
-  setFormState(formState: FormState, message?: string): void {
-    this.formState = formState;
-
-    // Enable/disable form
-    if (this.formGroup) {
-      if (this.formState === FormState.SAVING || this.formState === FormState.LOADING) {
-        this.formGroup.disable();
-        return;
-      }
-      this.formGroup.enable();
-    }
-
-    // Reset the form if appropriate
-    if (this.formState === FormState.SAVED) {
-      this.resetForm();
-    }
   }
 
   // private methods: init
@@ -211,6 +190,10 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
+  private getCanAddFriends(): boolean {
+    return (this.allUsers != null) && this.allUsers.length > 0;
+  }
+
   private getAvailableFriendNames(): string[] {
     if (!this.allUsers) {
       return [];
@@ -223,6 +206,24 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // private methods: helper
+
+  private setFormState(formState: FormState): void {
+    this.formState = formState;
+
+    // Enable/disable form
+    if (this.formGroup) {
+      if (this.formState === FormState.SAVING || this.formState === FormState.LOADING) {
+        this.formGroup.disable();
+        return;
+      }
+      this.formGroup.enable();
+    }
+
+    // Reset the form if appropriate
+    if (this.formState === FormState.SAVED) {
+      this.resetForm();
+    }
+  }
 
   private updateIsFormValid(): void {
     this.isFormValid = this.isControlValid(this.formGroup);
