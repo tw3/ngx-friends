@@ -19,13 +19,6 @@ import { UserEntity } from '../../_models/user.model';
 import { FormState } from '../../_models/form-state.enum';
 import { RandomUtil } from '../../_util/random_util';
 
-interface FormUser {
-  name: string;
-  age: number;
-  weight: number;
-  friendNameInput: string;
-}
-
 @Component({
   selector: 'tw3-user-form',
   templateUrl: './user-form.component.html',
@@ -239,4 +232,11 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
     this.formGroup.markAsUntouched();
   }
 
+}
+
+interface FormUser {
+  name: string;
+  age: number;
+  weight: number;
+  friendNameInput: string;
 }
