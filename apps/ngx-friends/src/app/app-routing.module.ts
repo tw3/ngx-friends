@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NoContentComponent } from './shared/_components/no-content/no-content.component';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 const routes: Routes = [
   {
@@ -17,7 +18,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    QuicklinkModule,
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: QuicklinkStrategy
+    })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
