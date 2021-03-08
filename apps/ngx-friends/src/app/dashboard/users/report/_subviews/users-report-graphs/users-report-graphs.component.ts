@@ -5,8 +5,11 @@ import { ForceDirectedGraph } from '../../../../../shared/_models/force-directed
 import { UsersService } from '../../../_services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { UserEntity } from '../../../../../shared/_models/user.model';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
+import { select, Store } from '@ngrx/store';
+import { fetchUsersFromUserReports } from '../../../+state/users.actions';
+import { selectUsers } from '../../../+state/users.selectors';
 
 @Component({
   selector: 'tw3-users-report-graphs',
@@ -22,24 +25,22 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     nodes: []
   };
 
-  private allFriendNames: string[];
+  private allUsers$: Observable<UserEntity[]>;
 
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    private readonly store: Store,
     private readonly usersService: UsersService,
     private readonly notificationService: NotificationService
   ) {
+    this.allUsers$ = this.store.pipe(select(selectUsers));
   }
 
   ngOnInit(): void {
     this.initListenForUsersChanges();
 
-    this.usersService.getUsers().pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe({
-      error: this.handleGetUsersError.bind(this)
-    });
+    this.store.dispatch(fetchUsersFromUserReports());
   }
 
   ngOnDestroy(): void {
@@ -64,7 +65,7 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
   }
 
   private initListenForUsersChanges(): void {
-    this.usersService.users$.pipe(
+    this.allUsers$.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
       next: this.handleUsersChange.bind(this)
@@ -72,9 +73,6 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
   }
 
   private handleUsersChange(users: UserEntity[]): void {
-    // Update allFriendNames
-    this.allFriendNames = users.map((user: UserEntity) => user.name);
-
     // Convert users into results
     this.userAgeResults = [];
     this.userWeightResults = [];

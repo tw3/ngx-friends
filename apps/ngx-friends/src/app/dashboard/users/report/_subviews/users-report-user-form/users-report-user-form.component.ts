@@ -1,10 +1,16 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { UserFormComponent } from '../../../../../shared/_components/user-form/user-form.component';
-import { UsersService } from '../../../_services/users.service';
-import { NotificationService } from '../../../../../core/_services/notification-service/notification.service';
 import { UserEntity } from '../../../../../shared/_models/user.model';
 import { FormState } from '../../../../../shared/_models/form-state.enum';
+import { select, Store } from '@ngrx/store';
+import { selectIsAddingUser, selectUsers } from '../../../+state/users.selectors';
+import {
+  requestAddUserFromUserReports,
+  userAddedFromUserReportsFailed,
+  userAddedFromUserReportsSuccess
+} from '../../../+state/users.actions';
+import { Actions, ofType } from '@ngrx/effects';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -19,10 +25,11 @@ export class UsersReportUserFormComponent implements OnInit, OnDestroy {
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private readonly usersService: UsersService,
-    private readonly notificationService: NotificationService
+    private readonly store: Store,
+    private readonly actions$: Actions
   ) {
-    this.allUsers$ = this.usersService.users$;
+    this.allUsers$ = this.store.pipe(select(selectUsers));
+    this.initListenForAddUserSavingState();
   }
 
   ngOnInit(): void {
@@ -34,26 +41,30 @@ export class UsersReportUserFormComponent implements OnInit, OnDestroy {
   }
 
   onUserSaved(user: UserEntity): void {
-    this.userFormComponent.setFormState(FormState.SAVING);
-    this.usersService.addUser(user).pipe(
+    this.store.dispatch(requestAddUserFromUserReports({ user }));
+  }
+
+  private initListenForAddUserSavingState(): void {
+    this.store.pipe(select(selectIsAddingUser)).pipe(
       takeUntil(this.ngUnsubscribe)
-    ).subscribe({
-      next: () => this.onUserAddSuccess(user),
-      error: (error: Error) => this.onUserAddError(error, user)
+    ).subscribe((isLoading: boolean) => {
+      if (isLoading) {
+        this.userFormComponent.setFormState(FormState.SAVING);
+      }
     });
-  }
 
-  private onUserAddSuccess(user: UserEntity): void {
-    this.notificationService.showSuccessToast(`User '${user.name}' added successfully`);
+    this.actions$.pipe(
+      ofType(userAddedFromUserReportsSuccess),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((action: { user: UserEntity }) => {
+      this.userFormComponent.setFormState(FormState.SAVED);
+    });
 
-    this.userFormComponent.setFormState(FormState.SAVED);
-  }
-
-  private onUserAddError(error: Error, user: UserEntity): void {
-    const errorMessage: string = error.message;
-
-    this.notificationService.showErrorToast(`User '${user.name}' add failed: ${errorMessage}`);
-
-    this.userFormComponent.setFormState(FormState.ERROR, errorMessage);
+    this.actions$.pipe(
+      ofType(userAddedFromUserReportsFailed),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((action: { error: string }) => {
+      this.userFormComponent.setFormState(FormState.ERROR);
+    });
   }
 }

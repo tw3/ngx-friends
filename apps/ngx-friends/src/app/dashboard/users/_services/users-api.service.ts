@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserEntity } from '../../../shared/_models/user.model';
 import { ForceDirectedGraph, ForceDirectedGraphLink } from '../../../shared/_models/force-directed-graph.model';
 import { Observable, Observer } from 'rxjs';
+import { deepCloneObj } from '../../../shared/_util/misc_util';
 
 @Injectable({
   providedIn: 'root'
@@ -91,7 +92,7 @@ export class UsersApiService {
         });
 
         // Trigger next() and complete()
-        observer.next(this.users);
+        observer.next(deepCloneObj(this.users));
         observer.complete();
       }, 1000);
     });
@@ -100,11 +101,11 @@ export class UsersApiService {
   // If this was a real app you'd have the other CRUD operations here
   // i.e. deleteUser(id), editUser(id), etc
 
-  getUsers(): Observable<UserEntity[]> {
+  getAllUsers(): Observable<UserEntity[]> {
     return new Observable<UserEntity[]>((observer: Observer<UserEntity[]>) => {
       // This is where you'd normally have an httpClient.get() call, this timeout simulates it
       window.setTimeout(() => {
-        observer.next(this.users);
+        observer.next(deepCloneObj(this.users));
         observer.complete();
       }, 1000);
     });
