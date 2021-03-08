@@ -1,7 +1,7 @@
 export const enum FormState {
-  LOADING,
-  READY,
-  SAVING,
-  SAVED,
-  ERROR
+  LOADING = 'LOADING',
+  READY = 'READY',
+  SAVING = 'SAVING',
+  SAVED = 'SAVED',
+  ERROR = 'ERROR'
 }
