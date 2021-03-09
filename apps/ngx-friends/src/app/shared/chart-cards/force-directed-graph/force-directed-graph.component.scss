@@ -2,3 +2,12 @@
   background-image: url('../../../../assets/img/network.svg');
   background-size: cover;
 }
+
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}

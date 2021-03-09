@@ -42,18 +42,6 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  get hasUserAgeResults(): boolean {
-    return !!this.userAgeResults && this.userAgeResults.length > 0;
-  }
-
-  get hasUserWeightResults(): boolean {
-    return !!this.userWeightResults && this.userWeightResults.length > 0;
-  }
-
-  get hasAgeWeightResults(): boolean {
-    return !!this.ageWeightResults && this.ageWeightResults.length > 0;
-  }
-
   private initListenForUsersChange(): void {
     this.allUsers$.pipe(
       takeUntil(this.ngUnsubscribe)

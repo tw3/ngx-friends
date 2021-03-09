@@ -4,29 +4,27 @@
       [friendsGraph]="friendsGraph"
       title="Friends Network">
     </ngf-force-directed-graph>
+
+    <ngf-horizontal-bar-chart
+      [results]="userAgeResults"
+      title="User Ages"
+      xAxisLabel="Age"
+      yAxisLabel="Name">
+    </ngf-horizontal-bar-chart>
+
+    <ngf-horizontal-bar-chart
+      [results]="userWeightResults"
+      title="User Weights"
+      xAxisLabel="Weight"
+      yAxisLabel="Name">
+    </ngf-horizontal-bar-chart>
+
+    <ngf-bubble-chart
+      [results]="ageWeightResults"
+      title="Age vs Weight (# Friends)"
+      xAxisLabel="Age"
+      yAxisLabel="Weight">
+    </ngf-bubble-chart>
   </ng-container>
 </ng-container>
 
-<ngf-horizontal-bar-chart
-  *ngIf="hasUserAgeResults"
-  [results]="userAgeResults"
-  title="User Ages"
-  xAxisLabel="Age"
-  yAxisLabel="Name">
-</ngf-horizontal-bar-chart>
-
-<ngf-horizontal-bar-chart
-  *ngIf="hasUserWeightResults"
-  [results]="userWeightResults"
-  title="User Weights"
-  xAxisLabel="Weight"
-  yAxisLabel="Name">
-</ngf-horizontal-bar-chart>
-
-<ngf-bubble-chart
-  *ngIf="hasAgeWeightResults"
-  [results]="ageWeightResults"
-  title="Age vs Weight (# Friends)"
-  xAxisLabel="Age"
-  yAxisLabel="Weight">
-</ngf-bubble-chart>

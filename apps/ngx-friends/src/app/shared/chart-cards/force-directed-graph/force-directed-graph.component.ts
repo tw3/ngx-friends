@@ -46,8 +46,12 @@ export class ForceDirectedGraphComponent implements OnInit, OnChanges {
 
     this.svg = D3.select('figure.dag-container')
       .append('svg')
-      .attr('width', this.width)
-      .attr('height', this.height);
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', `0 0 ${this.width} ${this.height}`)
+      .attr('display', 'inline-block')
+      .attr('position', 'absolute')
+      .attr('top', '0')
+      .attr('left', '0');
   }
 
   private drawGraph(graph: D3Graph): void {
