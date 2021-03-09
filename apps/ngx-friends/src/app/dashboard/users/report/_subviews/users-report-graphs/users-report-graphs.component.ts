@@ -15,16 +15,12 @@ import * as UsersSelectors from '../../../+state/users.selectors';
   styleUrls: ['./users-report-graphs.component.scss']
 })
 export class UsersReportGraphsComponent implements OnInit, OnDestroy {
+  friendsGraph$: Observable<ForceDirectedGraph>;
   userAgeResults: HorizontalBarChartDataPoint[];
   userWeightResults: HorizontalBarChartDataPoint[];
   ageWeightResults: BubbleChartDataPoint[];
-  friendsGraph: ForceDirectedGraph = {
-    links: [],
-    nodes: []
-  };
 
   private allUsers$: Observable<UserEntity[]>;
-  private friendsGraph$: Observable<ForceDirectedGraph>;
 
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -37,7 +33,6 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initListenForUsersChange();
-    this.initListenForFriendsGraphChange();
 
     this.store.dispatch(UsersActions.fetchUsersFromUserReports());
   }
@@ -59,23 +54,11 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     return !!this.ageWeightResults && this.ageWeightResults.length > 0;
   }
 
-  get hasFriendsGraph(): boolean {
-    return !!this.friendsGraph && !!this.friendsGraph.nodes && this.friendsGraph.nodes.length > 0;
-  }
-
   private initListenForUsersChange(): void {
     this.allUsers$.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
       next: this.handleUsersChange.bind(this)
-    });
-  }
-
-  private initListenForFriendsGraphChange(): void {
-    this.friendsGraph$.pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe({
-      next: this.handleGetFriendsGraphSuccess.bind(this)
     });
   }
 
@@ -108,10 +91,6 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
 
     // Re-fetch the friendsGraph
     this.store.dispatch(UsersActions.fetchFriendsGraphFromUserReports());
-  }
-
-  private handleGetFriendsGraphSuccess(friendsGraph: ForceDirectedGraph): void {
-    this.friendsGraph = friendsGraph;
   }
 
 }

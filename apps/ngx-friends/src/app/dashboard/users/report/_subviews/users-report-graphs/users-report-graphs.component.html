@@ -1,3 +1,10 @@
+<ng-container *ngIf="friendsGraph$ | async as friendsGraph">
+  <ngf-force-directed-graph
+    [friendsGraph]="friendsGraph"
+    title="Friends Network">
+  </ngf-force-directed-graph>
+</ng-container>
+
 <ngf-horizontal-bar-chart
   *ngIf="hasUserAgeResults"
   [results]="userAgeResults"

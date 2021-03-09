@@ -138,6 +138,10 @@ export class UsersApiService {
         {
           source: 'abc',
           target: 'def'
+        },
+        {
+          source: 'def',
+          target: 'abc'
         }
       ],
       nodes: [

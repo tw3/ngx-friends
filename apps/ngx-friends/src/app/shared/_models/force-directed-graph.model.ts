@@ -1,6 +1,6 @@
 export interface ForceDirectedGraph {
-  links: ForceDirectedGraphLink[];
   nodes: ForceDirectedGraphNode[];
+  links: ForceDirectedGraphLink[];
 }
 
 export interface ForceDirectedGraphLink {
