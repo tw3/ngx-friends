@@ -18,7 +18,7 @@ export class ForceDirectedGraphComponent implements OnInit, OnChanges {
   private svg;
   private simulation;
   private width = 900;
-  private height = 400;
+  private height = 350;
 
   constructor() {
   }

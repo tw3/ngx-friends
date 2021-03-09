@@ -1,8 +1,10 @@
 <ng-container *ngIf="friendsGraph$ | async as friendsGraph">
-  <ngf-force-directed-graph
-    [friendsGraph]="friendsGraph"
-    title="Friends Network">
-  </ngf-force-directed-graph>
+  <ng-container *ngIf="friendsGraph.nodes.length > 0">
+    <ngf-force-directed-graph
+      [friendsGraph]="friendsGraph"
+      title="Friends Network">
+    </ngf-force-directed-graph>
+  </ng-container>
 </ng-container>
 
 <ngf-horizontal-bar-chart
