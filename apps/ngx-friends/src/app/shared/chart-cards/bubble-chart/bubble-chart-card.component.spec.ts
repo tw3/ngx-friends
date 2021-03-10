@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BubbleChartCardComponent } from './bubble-chart-card.component';
-import { CommonMaterialModule } from '../../_modules/common-material.module';
+import { CommonMaterialModule } from '@ngf/material';
 
 describe('BubbleChartCardComponent', () => {
   let component: BubbleChartCardComponent;

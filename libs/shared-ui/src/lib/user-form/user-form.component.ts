@@ -15,9 +15,9 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { UserEntity } from '../../_models/user.model';
-import { FormState } from '../../_models/form-state.enum';
-import { RandomUtil } from '../../_util/random_util';
+import { UserEntity } from '../../../../../apps/ngx-friends/src/app/shared/_models/user.model';
+import { FormState } from '../../../../../apps/ngx-friends/src/app/shared/_models/form-state.enum';
+import { RandomUtil } from '../../../../../apps/ngx-friends/src/app/shared/_util/random_util';
 
 @Component({
   selector: 'ngf-user-form',

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HorizontalBarChartCardComponent } from './horizontal-bar-chart-card.component';
-import { CommonMaterialModule } from '../../_modules/common-material.module';
+import { CommonMaterialModule } from '@ngf/material';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 describe('HorizontalBarChartCardComponent', () => {

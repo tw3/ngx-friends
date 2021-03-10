@@ -1,0 +1,5 @@
+# Generate library
+ng generate @nrwl/angular:library --name=material
+
+# Generate component in library
+ng generate @schematics/angular:component --name=no-content --project=shared-ui --path=libs/shared-ui/src/lib --style=scss --export

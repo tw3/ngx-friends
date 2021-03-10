@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NoContentComponent } from './shared/_components/no-content/no-content.component';
+import { NoContentComponent } from '../../../../libs/shared-ui/src/lib/no-content/no-content.component';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 const routes: Routes = [
