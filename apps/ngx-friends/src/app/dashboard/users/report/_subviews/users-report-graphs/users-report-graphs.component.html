@@ -1,30 +1,30 @@
 <ng-container *ngIf="friendsGraph$ | async as friendsGraph">
   <ng-container *ngIf="friendsGraph.nodes.length > 0">
-    <ngf-force-directed-graph
+    <ngf-force-directed-graph-card
       [friendsGraph]="friendsGraph"
       title="Friends Network">
-    </ngf-force-directed-graph>
+    </ngf-force-directed-graph-card>
 
-    <ngf-horizontal-bar-chart
+    <ngf-horizontal-bar-chart-card
       [results]="userAgeResults"
       title="User Ages"
       xAxisLabel="Age"
       yAxisLabel="Name">
-    </ngf-horizontal-bar-chart>
+    </ngf-horizontal-bar-chart-card>
 
-    <ngf-horizontal-bar-chart
+    <ngf-horizontal-bar-chart-card
       [results]="userWeightResults"
       title="User Weights"
       xAxisLabel="Weight"
       yAxisLabel="Name">
-    </ngf-horizontal-bar-chart>
+    </ngf-horizontal-bar-chart-card>
 
-    <ngf-bubble-chart
+    <ngf-bubble-chart-card
       [results]="ageWeightResults"
       title="Age vs Weight (# Friends)"
       xAxisLabel="Age"
       yAxisLabel="Weight">
-    </ngf-bubble-chart>
+    </ngf-bubble-chart-card>
   </ng-container>
 </ng-container>
 

@@ -19,6 +19,7 @@
     "ngx-friends": { "tags": [] },
     "ngx-friends-e2e": { "tags": [], "implicitDependencies": ["ngx-friends"] },
     "shared-ui": { "tags": [] },
-    "material": { "tags": [] }
+    "material": { "tags": [] },
+    "chart-cards-ui": { "tags": [] }
   }
 }

@@ -1,17 +1,17 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { ForceDirectedGraph } from '../../_models/force-directed-graph.model';
+import { ForceDirectedGraph } from '../../models/force-directed-graph.model';
 import * as D3 from 'd3';
 import { chartColorScheme } from '../chart-color-scheme';
 import { D3GraphDataGenerator } from './d3-graph-data-generator';
 import { D3Graph, D3GraphNode } from './d3-graph-data.model';
 
 @Component({
-  selector: 'ngf-force-directed-graph',
-  templateUrl: './force-directed-graph.component.html',
-  styleUrls: ['./force-directed-graph.component.scss'],
+  selector: 'ngf-force-directed-graph-card',
+  templateUrl: './force-directed-graph-card.component.html',
+  styleUrls: ['./force-directed-graph-card.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ForceDirectedGraphComponent implements OnInit, OnChanges {
+export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
   @Input() friendsGraph: ForceDirectedGraph;
   @Input() title: string; // TODO: use this value
 

@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HorizontalBarChartDataPoint } from '../../../../../shared/chart-cards/horizontal-bar-chart/horizontal-bar-chart-data-point.model';
-import { BubbleChartDataPoint } from '../../../../../shared/chart-cards/bubble-chart/bubble-chart-data-point.model';
-import { ForceDirectedGraph } from '../../../../../shared/_models/force-directed-graph.model';
+import { HorizontalBarChartDataPoint } from '../../../../../../../../../libs/chart-cards-ui/src/lib/horizontal-bar-chart-card/horizontal-bar-chart-data-point.model';
+import { BubbleChartDataPoint } from '../../../../../../../../../libs/chart-cards-ui/src/lib/bubble-chart-card/bubble-chart-data-point.model';
+import { ForceDirectedGraph } from '../../../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
 import { takeUntil } from 'rxjs/operators';
-import { UserEntity } from '../../../../../shared/_models/user.model';
+import { UserEntity } from '../../../../../../../../../libs/shared-ui/src/models/user.model';
 import { Observable, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import * as UsersActions from '../../../+state/users.actions';

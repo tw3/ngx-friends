@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { UserEntity } from '../../../shared/_models/user.model';
-import { ForceDirectedGraph, ForceDirectedGraphLink } from '../../../shared/_models/force-directed-graph.model';
+import { UserEntity } from '../../../../../../../libs/shared-ui/src/models/user.model';
+import {
+  ForceDirectedGraph,
+  ForceDirectedGraphLink
+} from '../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
 import { Observable, Observer } from 'rxjs';
 import { deepCloneObj } from '../../../shared/_util/misc_util';
 

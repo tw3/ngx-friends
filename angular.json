@@ -199,6 +199,31 @@
           }
         }
       }
+    },
+    "chart-cards-ui": {
+      "projectType": "library",
+      "root": "libs/chart-cards-ui",
+      "sourceRoot": "libs/chart-cards-ui/src",
+      "prefix": "ngf",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chart-cards-ui/src/**/*.ts",
+              "libs/chart-cards-ui/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/chart-cards-ui"],
+          "options": {
+            "jestConfig": "libs/chart-cards-ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

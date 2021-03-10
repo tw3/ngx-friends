@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@ngf/shared-ui": ["libs/shared-ui/src/index.ts"],
-      "@ngf/material": ["libs/material/src/index.ts"]
+      "@ngf/material": ["libs/material/src/index.ts"],
+      "@ngf/chart-cards-ui": ["libs/chart-cards-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

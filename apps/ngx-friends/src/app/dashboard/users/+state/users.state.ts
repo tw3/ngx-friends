@@ -1,6 +1,6 @@
-import { UserEntity } from '../../../shared/_models/user.model';
+import { UserEntity } from '../../../../../../../libs/shared-ui/src/models/user.model';
 import { FormState } from '../../../shared/_models/form-state.enum';
-import { ForceDirectedGraph } from '../../../shared/_models/force-directed-graph.model';
+import { ForceDirectedGraph } from '../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
 
 export interface UsersState {
   users: UserEntity[];

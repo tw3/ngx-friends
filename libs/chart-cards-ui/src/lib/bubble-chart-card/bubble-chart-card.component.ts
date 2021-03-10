@@ -5,7 +5,7 @@ import { chartColorScheme } from '../chart-color-scheme';
 import { BubbleChartDataPoint } from './bubble-chart-data-point.model';
 
 @Component({
-  selector: 'ngf-bubble-chart',
+  selector: 'ngf-bubble-chart-card',
   templateUrl: './bubble-chart-card.component.html',
   styleUrls: ['./bubble-chart-card.component.scss']
 })

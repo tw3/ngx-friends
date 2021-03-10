@@ -3,11 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UsersApiService } from '../_services/users-api.service';
 import * as UsersActions from './users.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { UserEntity } from '../../../shared/_models/user.model';
+import { UserEntity } from '../../../../../../../libs/shared-ui/src/models/user.model';
 import { NotificationService } from '../../../core/_services/notification-service/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of as observableOf } from 'rxjs';
-import { ForceDirectedGraph } from '../../../shared/_models/force-directed-graph.model';
+import { ForceDirectedGraph } from '../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
 
 @Injectable()
 export class UsersEffects {
