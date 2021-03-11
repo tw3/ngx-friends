@@ -10,8 +10,6 @@ To run the app locally:
 1. `npm start`
 1. Navigate to http://localhost:4200/.
 
-You can also run the app from [StackBlitz](https://stackblitz.com/github/tw3/ngx-friends).
-
 Once the app is loaded you will see the User Input form. Enter in the name, age, weight, and friends for the user and
 click the Add User button.
 
@@ -20,18 +18,19 @@ A series of charts will appear below the form that visualize the data you entere
 For your convenience you can click the Populate Random Data to fill in the chart with a random name, age, weight, and
 set of friends (or none).
 
-(animated gif)
+![NGX Friends Demo](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/ngx-friends-demo.gif)
 
-## Overview
+## Code Design Overview
 
-(nx-dep-graph.png)
+NX Dependencies:
+![NGX Friends NX Dependencies](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/nx-dep-graph.png)
 
 ## Run storybook for chart-cards-ui
 
 1. ng run chart-cards-ui:storybook
 2. Visit http://localhost:4400/ in your browser
 
-(storybook png)
+![Storybook Demo](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/storybook_bubblechart.png)
 
 ## Testing
 
