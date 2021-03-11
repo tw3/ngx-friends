@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HorizontalBarChartCardComponent } from './horizontal-bar-chart-card.component';
 import { CommonMaterialModule } from '@ngf/material';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('HorizontalBarChartCardComponent', () => {
   let component: HorizontalBarChartCardComponent;
@@ -11,6 +12,7 @@ describe('HorizontalBarChartCardComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [HorizontalBarChartCardComponent],
       imports: [
+        NoopAnimationsModule,
         CommonMaterialModule,
         NgxChartsModule
       ]

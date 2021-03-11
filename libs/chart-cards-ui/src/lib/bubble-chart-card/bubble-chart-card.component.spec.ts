@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BubbleChartCardComponent } from './bubble-chart-card.component';
 import { CommonMaterialModule } from '@ngf/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('BubbleChartCardComponent', () => {
   let component: BubbleChartCardComponent;
@@ -11,6 +12,7 @@ describe('BubbleChartCardComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BubbleChartCardComponent],
       imports: [
+        NoopAnimationsModule,
         CommonMaterialModule,
         NgxChartsModule
       ]

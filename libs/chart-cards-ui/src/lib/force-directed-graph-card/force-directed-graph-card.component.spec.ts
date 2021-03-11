@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ForceDirectedGraphCardComponent } from './force-directed-graph-card.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonMaterialModule } from '@ngf/material';
 
 describe('ForceDirectedGraphCardComponent', () => {
   let component: ForceDirectedGraphCardComponent;
@@ -8,6 +10,10 @@ describe('ForceDirectedGraphCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        NoopAnimationsModule,
+        CommonMaterialModule
+      ],
       declarations: [ForceDirectedGraphCardComponent]
     })
       .compileComponents();
