@@ -29,6 +29,10 @@
     "shared-ui": { "tags": [] },
     "material": { "tags": [] },
     "chart-cards-ui": { "tags": [] },
-    "shared-ui-e2e": { "tags": [], "implicitDependencies": ["shared-ui"] }
+    "shared-ui-e2e": { "tags": [], "implicitDependencies": ["shared-ui"] },
+    "chart-cards-ui-e2e": {
+      "tags": [],
+      "implicitDependencies": ["chart-cards-ui"]
+    }
   }
 }
