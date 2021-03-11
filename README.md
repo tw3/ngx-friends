@@ -20,11 +20,6 @@ Weight, and Friends.
 
 ![NGX Friends Demo](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/ngx-friends-demo.gif)
 
-## Code Design Overview
-
-NX Dependencies:
-![NGX Friends NX Dependencies](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/nx-dep-graph.png)
-
 ## Run storybook for chart-cards-ui
 
 1. ng run chart-cards-ui:storybook
@@ -76,4 +71,8 @@ npm test
 - [NgxCharts](https://swimlane.github.io/ngx-charts/) v17 charting framework
 - [D3](https://d3js.org/) v4.13 charting library
 - [Flexboxgrid](http://flexboxgrid.com/) v6 grid system
- 
+
+## Code Design Overview
+
+NX Dependencies:
+![NGX Friends NX Dependencies](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/nx-dep-graph.png)
