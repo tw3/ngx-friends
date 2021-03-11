@@ -6,7 +6,7 @@ To run the app locally:
 
 1. `git clone https://github.com/tw3/ngx-friends.git`
 1. `cd ngx-friends`
-1. `npm install`
+1. `yarn install`
 1. `npm start`
 1. Navigate to http://localhost:4200/.
 
