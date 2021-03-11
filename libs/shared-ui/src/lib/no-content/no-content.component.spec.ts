@@ -26,6 +26,6 @@ describe('NoContentComponent', () => {
 
   it('should have proper h1 text', () => {
     const h1Elem = fixture.debugElement.query(By.css('h1'));
-    expect(h1Elem.nativeElement.innerText).toContain('404: page missing');
+    expect(h1Elem.nativeElement.innerHTML).toContain('404: page missing');
   });
 });
