@@ -10,13 +10,13 @@ To run the app locally:
 1. `npm start`
 1. Navigate to http://localhost:4200/.
 
-Once the app is loaded you will see the New User Details form. Enter in the name, age, weight, and friends for the user
+Once the app is loaded you will see the New User Details form. Enter in the Name, Age, Weight, and Friends for the user
 and click the Add User button.
 
 A series of charts will appear below the form that visualize the data you entered.
 
-For your convenience you can click the Populate Random Data to fill in the chart with a random name, age, weight, and
-set of friends (or none).
+For your convenience you can click the Populate Random Data to fill in the form with random values for Name, Age,
+Weight, and Friends.
 
 ![NGX Friends Demo](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/ngx-friends-demo.gif)
 
