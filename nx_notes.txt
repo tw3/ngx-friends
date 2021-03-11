@@ -2,4 +2,13 @@
 ng generate @nrwl/angular:library --name=material
 
 # Generate component in library
-ng generate @schematics/angular:component --name=no-content --project=shared-ui --path=libs/shared-ui/src/lib --style=scss --export
+ng generate @schematics/angular:component --name=no-content --project=shared-ui --path=libs/shared-ui/src/lib --style=scss --export --dry-run
+
+# Install storybook
+yarn add --dev @nrwl/storybook
+
+# Generate stories for library
+ng generate @nrwl/angular:storybook-configuration --name=shared-ui --configureCypress --generateCypressSpecs --generateStories
+
+# Run storybook
+ng run shared-ui:storybook

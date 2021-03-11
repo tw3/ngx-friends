@@ -1,104 +1,80 @@
-# ngx-friends
+# NGX-Friends
 
-This project was generated using [Nx](https://nx.dev).
+## Run the application
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+To run the app locally:
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+1. `git clone https://github.com/tw3/ngx-friends.git`
+1. `cd ngx-friends`
+1. `npm install`
+1. `npm start`
+1. Navigate to http://localhost:4200/.
 
-## Quick Start & Documentation
+You can also run the app from [StackBlitz](https://stackblitz.com/github/tw3/ngx-friends).
 
-[Nx Documentation](https://nx.dev/angular)
+Once the app is loaded you will see the User Input form. Enter in the name, age, weight, and friends for the user and
+click the Add User button.
 
-[10-minute video showing all Nx features](https://nx.dev/angular/getting-started/what-is-nx)
+A series of charts will appear below the form that visualize the data you entered.
 
-[Interactive Tutorial](https://nx.dev/angular/tutorial/01-create-application)
+For your convenience you can click the Populate Random Data to fill in the chart with a random name, age, weight, and
+set of friends (or none).
 
-## Adding capabilities to your workspace
+(animated gif)
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Overview
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects
-as well.
+(nx-dep-graph.png)
 
-Below are our core plugins:
+## Run storybook for chart-cards-ui
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+1. ng run chart-cards-ui:storybook
+2. Visit http://localhost:4400/ in your browser
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+(storybook png)
 
-## Generate an application
+## Testing
 
-Run `ng g @nrwl/angular:app my-app` to generate an application.
+### Run e2e tests for the whole app
 
-> You can use any of the plugins above to generate applications as well.
+```
+npm run e2e
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+### Run e2e tests for chart-cards-ui storybook
 
-## Generate a library
+```
+npx nx run shared-ui-e2e:e2e --watch
+```
 
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+## Run unit tests
 
-> You can also use any of the plugins above to generate libraries as well.
+```
+npm test
+```
 
-Libraries are shareable across libraries and applications. They can be imported from `@ngf/mylib`.
+## Libraries/Frameworks Used
 
-## Development server
-
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you
-change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use
-the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
-
-## ☁ Nx Cloud
-
-### Computation Memoization in the Cloud
-
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that
-are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s
-advanced code generation and project dependency graph, plus a unified experience for both frontend and backend
-developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- [Angular](https://angular.io/) v11
+  - Modules
+  - Components
+  - Services
+  - Routing
+  - Reactive Forms with Validation
+  - [Typescript](https://www.typescriptlang.org/) v4 language
+  - [RxJS](https://rxjs-dev.firebaseapp.com/guide/overview) v6
+- [Angular Material](https://material.angular.io/) v11 component library
+  - Material Toolbar
+  - Material Card
+  - Material Autocomplete
+  - Material Chips
+  - Material Progress Bar
+- [Nx](https://nx.dev/angular) v11 dev tools for Angular
+  - [ESLint 7](https://eslint.org/)
+  - [Jest 26](https://jestjs.io/) unit test framework
+  - [Cypress](https://www.cypress.io/) end-to-end test framework
+  - [Storybook 11](https://storybook.js.org/) component viewer/tester
+- [NgxCharts](https://swimlane.github.io/ngx-charts/) v17 charting framework
+- [D3](https://d3js.org/) v4.13 charting library
+- [Flexboxgrid](http://flexboxgrid.com/) v6 grid system
+ 
