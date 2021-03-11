@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as UsersActions from './users.actions';
 import { UsersState } from './users.state';
-import { UserEntity } from '../../../../../../../libs/shared-ui/src/models/user.model';
+import { UserEntity } from '@ngf/shared-ui';
 import { FormState } from '../../../shared/_models/form-state.enum';
-import { ForceDirectedGraph } from '../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
+import { ForceDirectedGraph } from '@ngf/chart-cards-ui';
 
 export const initialState: UsersState = {
   users: [],

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
+import { SharedUiModule } from '@ngf/shared-ui';
 
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
-import { SharedUiModule } from '../../../../../../libs/shared-ui/src';
 
 @NgModule({
   declarations: [UsersComponent],

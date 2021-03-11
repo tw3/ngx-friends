@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { UserEntity } from '../../../../../../../libs/shared-ui/src/models/user.model';
-import { ForceDirectedGraph } from '../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
+import { UserEntity } from '@ngf/shared-ui';
+import { ForceDirectedGraph } from '@ngf/chart-cards-ui';
 
 // Fetch User ----------------------------------------
 

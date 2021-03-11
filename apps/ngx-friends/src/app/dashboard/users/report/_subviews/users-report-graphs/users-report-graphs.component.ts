@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HorizontalBarChartDataPoint } from '../../../../../../../../../libs/chart-cards-ui/src/lib/horizontal-bar-chart-card/horizontal-bar-chart-data-point.model';
-import { BubbleChartDataPoint } from '../../../../../../../../../libs/chart-cards-ui/src/lib/bubble-chart-card/bubble-chart-data-point.model';
-import { ForceDirectedGraph } from '../../../../../../../../../libs/chart-cards-ui/src/models/force-directed-graph.model';
+import { BubbleChartDataPoint, ForceDirectedGraph, HorizontalBarChartDataPoint } from '@ngf/chart-cards-ui';
 import { takeUntil } from 'rxjs/operators';
-import { UserEntity } from '../../../../../../../../../libs/shared-ui/src/models/user.model';
+import { UserEntity } from '@ngf/shared-ui';
 import { Observable, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import * as UsersActions from '../../../+state/users.actions';

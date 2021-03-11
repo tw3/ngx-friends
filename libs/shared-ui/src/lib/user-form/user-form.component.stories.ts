@@ -1,6 +1,6 @@
 import { object, text } from '@storybook/addon-knobs';
 import { UserFormComponent } from './user-form.component';
-import { UserEntity } from '../../models/user.model';
+import { UserEntity } from '../../models/user-entity.model';
 import { CommonModule } from '@angular/common';
 import { CommonMaterialModule } from '@ngf/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
