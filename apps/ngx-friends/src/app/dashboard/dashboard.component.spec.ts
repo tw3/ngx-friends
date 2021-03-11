@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
+import { CommonMaterialModule } from '@ngf/material';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DashboardComponent', () => {
   let comp: DashboardComponent;
@@ -8,6 +10,10 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        CommonMaterialModule
+      ],
       declarations: [DashboardComponent]
     })
       .compileComponents();
@@ -20,17 +26,8 @@ describe('DashboardComponent', () => {
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(DashboardComponent);
+    const comp = fixture.componentInstance;
     expect(comp).toBeTruthy();
-  });
-
-  it(`should have as title 'ngx-friends'`, () => {
-    expect(comp.title).toEqual('ngx-friends');
-  });
-
-  it('should render title', () => {
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(
-      'Welcome to ngx-friends!'
-    );
   });
 });

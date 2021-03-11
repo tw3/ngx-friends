@@ -5,7 +5,7 @@ import { UserEntity } from '@ngf/shared-ui';
 import { FormState } from '../../../shared/_models/form-state.enum';
 import { ForceDirectedGraph } from '@ngf/chart-cards-ui';
 
-export const initialState: UsersState = {
+export const initialUsersState: UsersState = {
   users: [],
   friendsGraph: {
     links: [],
@@ -15,7 +15,7 @@ export const initialState: UsersState = {
 };
 
 export const usersReducer = createReducer(
-  initialState,
+  initialUsersState,
 
   on(UsersActions.usersFetchedFromUserReportsSuccess, (state: UsersState, action: { users: UserEntity[] }) => {
     return { ...state, users: action.users };

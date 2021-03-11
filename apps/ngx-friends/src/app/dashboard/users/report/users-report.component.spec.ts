@@ -1,25 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { UsersReportComponent } from './users-report.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('UsersReportComponent', () => {
-  let component: UsersReportComponent;
-  let fixture: ComponentFixture<UsersReportComponent>;
-
+describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UsersReportComponent]
-    })
-      .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UsersReportComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [],
+      declarations: [UsersReportComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const fixture = TestBed.createComponent(UsersReportComponent);
+    const comp = fixture.componentInstance;
+    expect(comp).toBeTruthy();
   });
 });
