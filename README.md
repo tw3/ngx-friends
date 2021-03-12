@@ -47,7 +47,7 @@ npx nx run chart-cards-ui-e2e:e2e --watch
 npx nx run shared-ui-e2e:e2e --watch
 ```
 
-## Run unit tests
+### Run unit tests
 
 ```
 npm test
