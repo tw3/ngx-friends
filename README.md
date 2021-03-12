@@ -72,7 +72,7 @@ npm test
 - [Nx](https://nx.dev/angular) v11 dev tools for Angular
   - [ESLint](https://eslint.org/) v7
   - [Jest](https://jestjs.io/) v26 unit test framework
-  - [Cypress](https://www.cypress.io/) end-to-end test framework
+  - [Cypress](https://www.cypress.io/) v6 end-to-end test framework
   - [Storybook](https://storybook.js.org/) v11 component viewer/tester
 - [NgxCharts](https://swimlane.github.io/ngx-charts/) v17 charting framework
 - [D3](https://d3js.org/) v4.13 charting library
