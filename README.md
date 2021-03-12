@@ -35,7 +35,13 @@ Weight, and Friends.
 npm run e2e
 ```
 
-### Run e2e tests for chart-cards-ui storybook
+### Run e2e tests for storybook in chart-cards-ui lib
+
+```
+npx nx run chart-cards-ui-e2e:e2e --watch
+```
+
+### Run e2e tests for storybook in shared-ui lib
 
 ```
 npx nx run shared-ui-e2e:e2e --watch
