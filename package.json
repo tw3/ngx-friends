@@ -26,7 +26,7 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "compodoc": "npx compodoc -p tsconfig.base.json -s"
+    "compodoc": "npx compodoc -p tsconfig.base.json -d compodoc -s"
   },
   "private": true,
   "dependencies": {
