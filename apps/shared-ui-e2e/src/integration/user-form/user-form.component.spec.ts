@@ -1,3 +1,5 @@
+// TODO: Use page objects to avoid duplicate code between this file and the app e2e
+
 describe('shared-ui UserFormComponent', () => {
   beforeEach(() => cy.visit('/iframe.html?id=userformcomponent--primary&knob-allUsers&knob-formState'));
 
