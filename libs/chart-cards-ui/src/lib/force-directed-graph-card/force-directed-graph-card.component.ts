@@ -11,7 +11,6 @@ import * as D3 from 'd3';
 import { chartColorScheme } from '../chart-color-scheme';
 import { D3GraphDataGenerator } from './d3-graph-data-generator';
 import { D3Graph, D3GraphNode } from './d3-graph-data.model';
-import { ForceDirectedGraph } from '../../models/force-directed-graph.model';
 
 @Component({
   selector: 'ngf-force-directed-graph-card',
@@ -153,4 +152,22 @@ export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
     d.fy = null;
   }
 
+}
+
+interface ForceDirectedGraph {
+  nodes: ForceDirectedGraphNode[];
+  links: ForceDirectedGraphLink[];
+}
+
+interface ForceDirectedGraphLink {
+  source: ForceDirectedGraphLinkSource,
+  target: ForceDirectedGraphLinkTarget
+}
+
+type ForceDirectedGraphLinkSource = string;
+
+type ForceDirectedGraphLinkTarget = string;
+
+interface ForceDirectedGraphNode {
+  value: string
 }
