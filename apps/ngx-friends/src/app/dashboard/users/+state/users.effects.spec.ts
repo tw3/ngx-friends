@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { DataPersistence, NxModule } from '@nrwl/angular';
-import { hot } from '@nrwl/angular/testing';
+import { cold, hot } from '@nrwl/angular/testing';
 
 import { UsersEffects } from './users.effects';
 import * as UsersActions from './users.actions';
@@ -45,11 +45,24 @@ describe('UsersEffects', () => {
       const users: UserEntity[] = [{}] as UserEntity[];
       spyOn(usersApiService, 'getAllUsers').and.returnValue(observableOf(users));
 
-      const expected = hot('-a-|', {
-        a: UsersActions.usersFetchedFromUserReportsSuccess({ users })
+      const expected = hot('-r-|', {
+        r: UsersActions.usersFetchedFromUserReportsSuccess({ users })
       });
 
       expect(effects.fetchUsers$).toBeObservable(expected);
+    });
+
+    it('should cancel the previous request for getAllUsers() if still pending', () => {
+      actions$ = hot('-a-a-|', { a: UsersActions.fetchUsersFromUserReports() });
+      const users: UserEntity[] = [{}] as UserEntity[];
+      const apiResponse = cold('---b-|', { b: users });
+      const getAllUsersSpy = spyOn(usersApiService, 'getAllUsers').and.returnValue(apiResponse);
+
+      const expected = hot('------r-|', {
+        r: UsersActions.usersFetchedFromUserReportsSuccess({ users })
+      });
+      expect(effects.fetchUsers$).toBeObservable(expected);
+      expect(getAllUsersSpy).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -60,10 +73,9 @@ describe('UsersEffects', () => {
       const friendsGraph: ForceDirectedGraph = {} as ForceDirectedGraph;
       spyOn(usersApiService, 'getFriendsGraph').and.returnValue(observableOf(friendsGraph));
 
-      const expected = hot('-a-|', {
-        a: UsersActions.friendsGraphFetchedFromUserReportsSuccess({ friendsGraph })
+      const expected = hot('-r-|', {
+        r: UsersActions.friendsGraphFetchedFromUserReportsSuccess({ friendsGraph })
       });
-
       expect(effects.fetchFriendsGraph$).toBeObservable(expected);
     });
   });
@@ -78,16 +90,17 @@ describe('UsersEffects', () => {
       const user: UserEntity = {
         name: 'Jasmine'
       } as UserEntity;
-      actions$ = hot('-a-|', { a: UsersActions.requestAddUserFromUserReports({ user }) });
+      actions$ = hot('-r-|', {
+        r: UsersActions.requestAddUserFromUserReports({ user })
+      });
 
       spyOn(usersApiService, 'addUser').and.returnValue(observableOf(user));
 
       const showSuccessToastSpy = spyOn(notificationService, 'showSuccessToast');
 
-      const expected = hot('-a-|', {
-        a: UsersActions.userAddedFromUserReportsSuccess({ user })
+      const expected = hot('-r-|', {
+        r: UsersActions.userAddedFromUserReportsSuccess({ user })
       });
-
       expect(effects.requestAddUser$).toBeObservable(expected);
       expect(showSuccessToastSpy).toHaveBeenCalledWith(`User '${user.name}' added successfully`);
     });
@@ -96,7 +109,9 @@ describe('UsersEffects', () => {
       const user: UserEntity = {
         name: 'Jasmine'
       } as UserEntity;
-      actions$ = hot('-a-|', { a: UsersActions.requestAddUserFromUserReports({ user }) });
+      actions$ = hot('-r-|', {
+        r: UsersActions.requestAddUserFromUserReports({ user })
+      });
 
       const errorMessage = 'Jasmine is already a user';
       const error: Error = new Error(errorMessage);
@@ -104,15 +119,13 @@ describe('UsersEffects', () => {
 
       const showErrorToastSpy = spyOn(notificationService, 'showErrorToast');
 
-      const expected = hot('-a-|', {
-        a: UsersActions.userAddedFromUserReportsFailed({ error: errorMessage })
+      const expected = hot('-r-|', {
+        r: UsersActions.userAddedFromUserReportsFailed({ error: errorMessage })
       });
-
       expect(effects.requestAddUser$).toBeObservable(expected);
       expect(showErrorToastSpy).toHaveBeenCalledWith(`User '${user.name}' add failed: ${errorMessage}`);
     });
   });
-
 
 });
 
