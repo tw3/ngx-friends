@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserEntity } from '@ngf/shared-ui';
-import { FormState } from '../../../../../shared/_models/form-state.enum';
+import { FormState, UserEntity } from '@ngf/shared-ui';
 import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import * as UsersSelectors from '../../../+state/users.selectors';
 import * as UsersActions from '../../../+state/users.actions';
 

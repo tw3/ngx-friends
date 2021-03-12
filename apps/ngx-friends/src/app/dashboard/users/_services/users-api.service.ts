@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UserEntity } from '@ngf/shared-ui';
 import { ForceDirectedGraph, ForceDirectedGraphLink } from '@ngf/chart-cards-ui';
+import { deepCloneObj, UserEntity } from '@ngf/shared-ui';
 import { Observable, Observer } from 'rxjs';
-import { deepCloneObj } from '../../../shared/_util/misc_util';
 
 @Injectable({
   providedIn: 'root'

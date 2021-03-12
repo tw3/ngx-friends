@@ -1,6 +1,6 @@
-import { ForceDirectedGraph } from '../../models/force-directed-graph.model';
-import { deepCloneObj } from '../../../../../apps/ngx-friends/src/app/shared/_util/misc_util';
 import { D3Graph, D3GraphLink, D3GraphNode } from './d3-graph-data.model';
+import { deepCloneObj } from '@ngf/shared-ui';
+import { ForceDirectedGraph } from '../../models/force-directed-graph.model';
 
 export class D3GraphDataGenerator {
   private readonly hasData: boolean;

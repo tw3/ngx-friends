@@ -1,6 +1,5 @@
-import { UserEntity } from '@ngf/shared-ui';
-import { FormState } from '../../../shared/_models/form-state.enum';
 import { ForceDirectedGraph } from '@ngf/chart-cards-ui';
+import { FormState, UserEntity } from '@ngf/shared-ui';
 
 export interface UsersState {
   users: UserEntity[];

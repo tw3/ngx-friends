@@ -12,12 +12,12 @@ import {
   ViewChild
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { UserEntity } from '../../models/user-entity.model';
-import { FormState } from '../../../../../apps/ngx-friends/src/app/shared/_models/form-state.enum';
-import { RandomUtil } from '../../../../../apps/ngx-friends/src/app/shared/_util/random_util';
+import { FormState } from '../../models/form-state.enum';
+import { RandomUtil } from '../../util/random_util';
 
 @Component({
   selector: 'ngf-user-form',
