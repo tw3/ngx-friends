@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { chartColorScheme } from '../chart-color-scheme';
 
@@ -7,7 +7,8 @@ import { BubbleChartDataPoint } from './bubble-chart-data-point.model';
 @Component({
   selector: 'ngf-bubble-chart-card',
   templateUrl: './bubble-chart-card.component.html',
-  styleUrls: ['./bubble-chart-card.component.scss']
+  styleUrls: ['./bubble-chart-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BubbleChartCardComponent {
   @Input() title: string;

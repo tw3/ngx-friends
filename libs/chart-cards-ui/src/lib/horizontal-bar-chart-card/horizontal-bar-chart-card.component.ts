@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { chartColorScheme } from '../chart-color-scheme';
 
@@ -7,7 +7,8 @@ import { HorizontalBarChartDataPoint } from './horizontal-bar-chart-data-point.m
 @Component({
   selector: 'ngf-horizontal-bar-chart-card',
   templateUrl: './horizontal-bar-chart-card.component.html',
-  styleUrls: ['./horizontal-bar-chart-card.component.scss']
+  styleUrls: ['./horizontal-bar-chart-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HorizontalBarChartCardComponent {
   @Input() title: string;

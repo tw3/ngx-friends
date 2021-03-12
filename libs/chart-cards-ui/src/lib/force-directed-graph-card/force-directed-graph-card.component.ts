@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import * as D3 from 'd3';
 import { chartColorScheme } from '../chart-color-scheme';
 import { D3GraphDataGenerator } from './d3-graph-data-generator';
@@ -9,7 +17,8 @@ import { ForceDirectedGraph } from '../../models/force-directed-graph.model';
   selector: 'ngf-force-directed-graph-card',
   templateUrl: './force-directed-graph-card.component.html',
   styleUrls: ['./force-directed-graph-card.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
   @Input() friendsGraph: ForceDirectedGraph;
