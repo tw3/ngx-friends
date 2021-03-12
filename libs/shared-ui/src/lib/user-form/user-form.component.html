@@ -78,7 +78,7 @@
                     <mat-chip
                       *ngFor="let userFriendName of selectedFriendNames"
                       removable="true"
-                      (removed)="onRemovedUserFriend(userFriendName);">
+                      (removed)="onRemovedUserFriend(userFriendName)">
                       {{ userFriendName }}
                       <mat-icon matChipRemove>
                         cancel
@@ -98,7 +98,7 @@
                   <!-- autocomplete dropdown for available friend names -->
                   <mat-autocomplete
                     #availableFriendNamesAutocomplete="matAutocomplete"
-                    (optionSelected)="onAvailableFriendSelected($event); friendNameInput.value = ''">
+                    (optionSelected)="onAvailableFriendSelected($event)">
                     <mat-option
                       *ngFor="let friendNameOption of friendNameAutocompleteOptions"
                       [value]="friendNameOption">

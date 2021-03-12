@@ -14,7 +14,7 @@ import {
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { UserEntity } from '../../models/user-entity.model';
 import { FormState } from '../../models/form-state.enum';
 import { RandomUtil } from '../../util/random_util';
@@ -38,6 +38,9 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('formElem') private readonly formElem: HTMLFormElement;
   @ViewChild('friendNameInput') private readonly friendNameInputElem: ElementRef;
+
+  private friendNameInputControl: AbstractControl;
+
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor() {
@@ -50,9 +53,9 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['allUsers'] && this.formGroup) {
       if (this.getCanAddFriends()) {
-        this.formGroup.controls['friendNameInput'].enable();
+        this.friendNameInputControl.enable();
       } else {
-        this.formGroup.controls['friendNameInput'].disable();
+        this.friendNameInputControl.disable();
       }
     }
     if (changes['formState']) {
@@ -92,6 +95,9 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   onAvailableFriendSelected(event: MatAutocompleteSelectedEvent): void {
     const friendName: string = event.option.viewValue;
     this.selectedFriendNames = [...this.selectedFriendNames, friendName];
+    // Reset state
+    this.friendNameInputElem.nativeElement.value = '';
+    this.friendNameInputControl.setValue(null);
   }
 
   onFormSubmit(): void {
@@ -151,9 +157,9 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     // React to friend name input value changes
-    this.formGroup.controls['friendNameInput'].valueChanges.pipe(
+    this.friendNameInputControl = this.formGroup.controls['friendNameInput'];
+    this.friendNameInputControl.valueChanges.pipe(
       distinctUntilChanged(),
-      filter(friendNameValue => !!friendNameValue),
       takeUntil(this.ngUnsubscribe)
     ).subscribe(this.onFriendNameValueChanged.bind(this));
   }
@@ -165,12 +171,11 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   // private methods: friend name input
 
   private onFriendNameValueChanged(friendNameInputText?: string): void {
-    if (friendNameInputText === undefined) {
-      friendNameInputText = this.friendNameInputElem.nativeElement.value;
+    if (!friendNameInputText) {
+      this.friendNameAutocompleteOptions = [];
+    } else {
+      this.friendNameAutocompleteOptions = this.getMatchingAvailableFriendNames(friendNameInputText);
     }
-    this.friendNameAutocompleteOptions = friendNameInputText ?
-      this.getMatchingAvailableFriendNames(friendNameInputText) :
-      this.getAvailableFriendNames().slice();
   }
 
   private getMatchingAvailableFriendNames(inputText: string): string[] {
