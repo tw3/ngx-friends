@@ -16,7 +16,9 @@ export class UsersEffects {
       ofType(UsersActions.fetchUsersFromUserReports),
       mergeMap(() => {
         return this.usersApiService.getAllUsers().pipe(
-          map((users: UserEntity[]) => UsersActions.usersFetchedFromUserReportsSuccess({ users }))
+          map((users: UserEntity[]) => {
+            return UsersActions.usersFetchedFromUserReportsSuccess({ users });
+          })
         );
       })
     );
@@ -27,7 +29,9 @@ export class UsersEffects {
       ofType(UsersActions.fetchFriendsGraphFromUserReports),
       mergeMap(() => {
         return this.usersApiService.getFriendsGraph().pipe(
-          map((friendsGraph: ForceDirectedGraph) => UsersActions.friendsGraphFetchedFromUserReportsSuccess({ friendsGraph }))
+          map((friendsGraph: ForceDirectedGraph) => {
+            return UsersActions.friendsGraphFetchedFromUserReportsSuccess({ friendsGraph });
+          })
         );
       })
     );
@@ -38,9 +42,9 @@ export class UsersEffects {
       ofType(UsersActions.requestAddUserFromUserReports),
       mergeMap(({ user }: { user: UserEntity }) => {
         return this.usersApiService.addUser(user).pipe(
-          map((users: UserEntity[]) => {
-            this.notificationService.showSuccessToast(`User '${user.name}' added successfully`);
-            return UsersActions.userAddedFromUserReportsSuccess({ user });
+          map((resultUser: UserEntity) => {
+            this.notificationService.showSuccessToast(`User '${resultUser.name}' added successfully`);
+            return UsersActions.userAddedFromUserReportsSuccess({ user: resultUser });
           }),
           catchError((error: HttpErrorResponse) => {
             const errorMessage: string = error.message;

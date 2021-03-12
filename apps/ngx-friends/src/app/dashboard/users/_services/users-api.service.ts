@@ -20,8 +20,8 @@ export class UsersApiService {
     // this.initDummyData();
   }
 
-  addUser(newUser: UserEntity): Observable<UserEntity[]> {
-    return new Observable<UserEntity[]>((observer: Observer<UserEntity[]>) => {
+  addUser(newUser: UserEntity): Observable<UserEntity> {
+    return new Observable<UserEntity>((observer: Observer<UserEntity>) => {
       // This is where you'd normally have an httpClient.get() call, this timeout simulates it
       window.setTimeout(() => {
         const isDuplicate: boolean = this.isDuplicateUser(newUser);
@@ -58,7 +58,7 @@ export class UsersApiService {
         }];
 
         // Trigger next() and complete()
-        observer.next(deepCloneObj(this.users));
+        observer.next(deepCloneObj(newUser));
         observer.complete();
       }, 1000);
     });
