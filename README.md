@@ -70,10 +70,10 @@ npm test
   - Material Chips
   - Material Progress Bar
 - [Nx](https://nx.dev/angular) v11 dev tools for Angular
-  - [ESLint 7](https://eslint.org/)
-  - [Jest 26](https://jestjs.io/) unit test framework
+  - [ESLint](https://eslint.org/) v7
+  - [Jest](https://jestjs.io/) v26 unit test framework
   - [Cypress](https://www.cypress.io/) end-to-end test framework
-  - [Storybook 11](https://storybook.js.org/) component viewer/tester
+  - [Storybook](https://storybook.js.org/) v11 component viewer/tester
 - [NgxCharts](https://swimlane.github.io/ngx-charts/) v17 charting framework
 - [D3](https://d3js.org/) v4.13 charting library
 - [Flexboxgrid](http://flexboxgrid.com/) v6 grid system
