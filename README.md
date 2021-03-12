@@ -78,7 +78,14 @@ npm test
 - [D3](https://d3js.org/) v4.13 charting library
 - [Flexboxgrid](http://flexboxgrid.com/) v6 grid system
 
-## Code Design Overview
+## App and lib relationships
 
 NX Dependencies:
 ![NGX Friends NX Dependencies](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/nx-dep-graph.png)
+
+## Compodoc
+
+1. `npm run compodoc`
+2. Visit http://127.0.0.1:8080 in your browser
+
+![Compodoc Screenshot](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/compodoc_AppModule.png)
