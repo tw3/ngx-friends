@@ -5,7 +5,7 @@ describe('shared-ui UserFormComponent', () => {
     cy.get('ngf-user-form').should('exist');
   });
 
-  it('should have propre fields and buttons', function() {
+  it('should have propre fields and buttons', () => {
     cy.get('input[formcontrolname="name"]').should('have.value', '');
     cy.get('input[formcontrolname="age"]').should('have.value', '');
     cy.get('input[formcontrolname="weight"]').should('have.value', '');
@@ -19,7 +19,7 @@ describe('shared-ui UserFormComponent', () => {
     cy.get('mat-card-actions button').contains('Reset').should('exist');
   });
 
-  it('should enter user details by typing', function() {
+  it('should enter user details by typing', () => {
     cy.get('input[formcontrolname="name"]').type('Ted').should('have.value', 'Ted');
     cy.get('input[formcontrolname="age"]').type('43').should('have.value', '43');
     cy.get('input[formcontrolname="weight"]').type('200').should('have.value', '200');
@@ -30,7 +30,7 @@ describe('shared-ui UserFormComponent', () => {
     cy.get('mat-chip').eq(0).should('contain', 'abc');
   });
 
-  it('should enter user details via "Populate Random Data" button', function() {
+  it('should enter user details via "Populate Random Data" button', () => {
     cy.get('mat-card-actions button').contains('Populate Random Data').click();
 
     cy.get('input[formcontrolname="name"]').should('not.have.value', '');
@@ -38,7 +38,7 @@ describe('shared-ui UserFormComponent', () => {
     cy.get('input[formcontrolname="weight"]').should('not.have.value', '');
   });
 
-  it('should reset user details via "Reset" button', function() {
+  it('should reset user details via "Reset" button', () => {
     cy.get('mat-card-actions button').contains('Populate Random Data').click();
     cy.get('mat-card-actions button').contains('Reset').click();
 
