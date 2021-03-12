@@ -29,10 +29,10 @@ Weight, and Friends.
 
 ## Testing
 
-### Run e2e tests for the whole app
+### Run e2e tests for the app
 
 ```
-npm run e2e
+npx nx run ngx-friends-e2e:e2e --watch
 ```
 
 ### Run e2e tests for storybook in chart-cards-ui lib
