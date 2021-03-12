@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UsersApiService } from '../_services/users-api.service';
 import * as UsersActions from './users.actions';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserEntity } from '@ngf/shared-ui';
 import { NotificationService } from '../../../core/_services/notification-service/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,7 +14,7 @@ export class UsersEffects {
   fetchUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(UsersActions.fetchUsersFromUserReports),
-      mergeMap(() => {
+      switchMap(() => {
         return this.usersApiService.getAllUsers().pipe(
           map((users: UserEntity[]) => {
             return UsersActions.usersFetchedFromUserReportsSuccess({ users });
@@ -27,7 +27,7 @@ export class UsersEffects {
   fetchFriendsGraph$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(UsersActions.fetchFriendsGraphFromUserReports),
-      mergeMap(() => {
+      switchMap(() => {
         return this.usersApiService.getFriendsGraph().pipe(
           map((friendsGraph: ForceDirectedGraph) => {
             return UsersActions.friendsGraphFetchedFromUserReportsSuccess({ friendsGraph });
@@ -40,7 +40,7 @@ export class UsersEffects {
   requestAddUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(UsersActions.requestAddUserFromUserReports),
-      mergeMap(({ user }: { user: UserEntity }) => {
+      switchMap(({ user }: { user: UserEntity }) => {
         return this.usersApiService.addUser(user).pipe(
           map((resultUser: UserEntity) => {
             this.notificationService.showSuccessToast(`User '${resultUser.name}' added successfully`);
