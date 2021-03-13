@@ -53,7 +53,7 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
     this.userAgeResults = [];
     this.userWeightResults = [];
     this.ageWeightResults = [];
-    users.forEach((user: UserEntity) => {
+    for (const user of users) {
       this.userAgeResults.push({
         name: user.name,
         value: user.age
@@ -73,7 +73,7 @@ export class UsersReportGraphsComponent implements OnInit, OnDestroy {
           }
         ]
       });
-    });
+    }
 
     // Re-fetch the friendsGraph
     this.store.dispatch(UsersActions.fetchFriendsGraphFromUserReports());
