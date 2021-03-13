@@ -73,6 +73,8 @@ npm test
   - [ESLint](https://eslint.org/) v7
   - [Jest](https://jestjs.io/) v26 unit test framework
   - [Cypress](https://www.cypress.io/) v6 end-to-end test framework
+    - [cypress-image-snapshot](https://github.com/jaredpalmer/cypress-image-snapshot) v4 to catch visual regressions
+      during e2e tests
   - [Storybook](https://storybook.js.org/) v11 component viewer/tester
 - [NgxCharts](https://swimlane.github.io/ngx-charts/) v17 charting framework
 - [D3](https://d3js.org/) v4.13 charting library
