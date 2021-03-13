@@ -9,4 +9,9 @@ describe('chart-cards-ui HorizontalBarChartCardComponent', () => {
     cy.get('mat-card-title').should('contain.text', 'User Weights');
   });
 
+  it('should match visually with the previous snapshot', () => {
+    cy.get('div.ngx-charts-outer', { timeout: 10000 }).should('not.have.class', 'ng-animating');
+    cy['matchImageSnapshot']();
+  });
+
 });

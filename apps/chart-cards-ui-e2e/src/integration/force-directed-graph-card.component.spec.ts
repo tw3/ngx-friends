@@ -9,4 +9,11 @@ describe('chart-cards-ui ForceDirectedGraphCardComponent', () => {
     cy.get('mat-card-title').should('contain.text', 'Friends Network');
   });
 
+  it('should match visually with the previous snapshot', () => {
+    cy.get('figure.dag-container')
+      .parent('div.chart-container', { timeout: 15000 })
+      .should('have.class', 'simulation-end');
+    cy['matchImageSnapshot']();
+  });
+
 });

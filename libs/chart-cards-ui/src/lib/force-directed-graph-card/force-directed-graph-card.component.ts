@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -23,12 +24,16 @@ export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
   @Input() friendsGraph: ForceDirectedGraph;
   @Input() title: string; // TODO: use this value
 
+  isAtSimulationEnd = false;
+
   private svg;
   private simulation;
   private width = 900;
   private height = 350;
 
-  constructor() {
+  constructor(
+    private readonly cd: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit(): void {
@@ -50,6 +55,7 @@ export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
   }
 
   private createSvg() {
+    this.isAtSimulationEnd = false;
     D3.select('figure.dag-container').html('');
 
     this.svg = D3.select('figure.dag-container')
@@ -116,7 +122,8 @@ export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
 
     this.simulation
       .nodes(graph.nodes)
-      .on('tick', ticked);
+      .on('tick', ticked)
+      .on('end', () => this.onSimulationEnd());
 
     this.simulation.force('link')
       .links(graph.links);
@@ -150,6 +157,11 @@ export class ForceDirectedGraphCardComponent implements OnInit, OnChanges {
     if (!D3.event.active) this.simulation.alphaTarget(0);
     d.fx = null;
     d.fy = null;
+  }
+
+  private onSimulationEnd(): void {
+    this.isAtSimulationEnd = true;
+    this.cd.markForCheck();
   }
 
 }
