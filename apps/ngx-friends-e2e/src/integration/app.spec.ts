@@ -49,7 +49,6 @@ describe('ngx-friends', () => {
 
       cy.get('mat-progress-bar').should('exist');
       cy.get('input[formcontrolname="name"]').should('be.disabled').should('have.value', 'John');
-      ;
       cy.get('input[formcontrolname="age"]').should('be.disabled').should('have.value', '38');
       cy.get('input[formcontrolname="weight"]').should('be.disabled').should('have.value', '180');
       cy.get('input[formcontrolname="friendNameInput"]').should('be.disabled');
@@ -64,19 +63,7 @@ describe('ngx-friends', () => {
       cy.get('ngf-horizontal-bar-chart-card').should('exist');
     });
 
-    it('should enter random user details, add the user, and show the chart cards', () => {
-      cy.get('mat-card-actions button').contains('Populate Random Data').click();
-
-      cy.get('mat-card-actions button').contains('Add User').click();
-      cy.get('mat-progress-bar').should('exist');
-
-      cy.get('mat-progress-bar').should('not.exist');
-      cy.get('ngf-force-directed-graph-card').should('exist');
-      cy.get('ngf-bubble-chart-card').should('exist');
-      cy.get('ngf-horizontal-bar-chart-card').should('exist');
-    });
-
-    it('should add third user manually and be friends with John', () => {
+    it('should add second user manually and be friends with John', () => {
       cy.get('input[formcontrolname="name"]').type('Chris').should('have.value', 'Chris');
       cy.get('input[formcontrolname="age"]').type('37').should('have.value', '37');
       cy.get('input[formcontrolname="weight"]').type('188').should('have.value', '188');
@@ -93,6 +80,18 @@ describe('ngx-friends', () => {
       cy.get('input[formcontrolname="age"]').should('be.enabled').should('have.value', '');
       cy.get('input[formcontrolname="weight"]').should('be.enabled').should('have.value', '');
       cy.get('input[formcontrolname="friendNameInput"]').should('be.enabled').should('have.value', '');
+      cy.get('ngf-force-directed-graph-card').should('exist');
+      cy.get('ngf-bubble-chart-card').should('exist');
+      cy.get('ngf-horizontal-bar-chart-card').should('exist');
+    });
+
+    it('should enter third random user details, add the user, and show the chart cards', () => {
+      cy.get('mat-card-actions button').contains('Populate Random Data').click();
+
+      cy.get('mat-card-actions button').contains('Add User').click();
+      cy.get('mat-progress-bar').should('exist');
+
+      cy.get('mat-progress-bar').should('not.exist');
       cy.get('ngf-force-directed-graph-card').should('exist');
       cy.get('ngf-bubble-chart-card').should('exist');
       cy.get('ngf-horizontal-bar-chart-card').should('exist');
