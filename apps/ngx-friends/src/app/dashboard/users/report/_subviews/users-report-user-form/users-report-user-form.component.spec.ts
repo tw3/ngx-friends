@@ -37,12 +37,11 @@ describe('UsersReportUserFormComponent', () => {
       const user: UserEntity = {
         name: 'Jessica', age: 37, weight: 166, friendNames: ['Jordan']
       };
-      const action = UsersActions.requestAddUserFromUserReports({ user });
       const dispatchSpy = spyOn(store, 'dispatch');
 
       comp.onUserSaved(user);
 
-      expect(dispatchSpy).toHaveBeenCalledWith(action);
+      expect(dispatchSpy).toHaveBeenCalledWith(UsersActions.requestAddUserFromUserReports({ user }));
     });
   });
 
