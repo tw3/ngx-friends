@@ -47,7 +47,7 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.buildForm();
+    this.buildFormAndListenForChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -82,7 +82,9 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
       weight: RandomUtil.getRandomInt(8, 400),
       friendNameInput: ''
     });
-    this.selectedFriendNames = RandomUtil.getRandomArraySubset(this.allUsers).map(u => u.name);
+    this.selectedFriendNames = Array.isArray(this.allUsers) ?
+      RandomUtil.getRandomArraySubset(this.allUsers).map(u => u.name) :
+      [];
     evt.preventDefault(); // don't submit
   }
 
@@ -125,6 +127,11 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
 
   // private methods: init
 
+  private buildFormAndListenForChanges(): void {
+    this.buildForm();
+    this.listenForFormChanges();
+  }
+
   private buildForm(): void {
     this.formGroup = new FormGroup({
       name: new FormControl('',
@@ -148,7 +155,10 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
       ),
       friendNameInput: new FormControl()
     });
+    this.friendNameInputControl = this.formGroup.controls['friendNameInput'];
+  }
 
+  private listenForFormChanges(): void {
     // Listen for changes to form state
     this.formGroup.statusChanges.pipe(
       takeUntil(this.ngUnsubscribe)
@@ -157,7 +167,6 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     // React to friend name input value changes
-    this.friendNameInputControl = this.formGroup.controls['friendNameInput'];
     this.friendNameInputControl.valueChanges.pipe(
       distinctUntilChanged(),
       takeUntil(this.ngUnsubscribe)
@@ -188,10 +197,6 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  private getCanAddFriends(): boolean {
-    return (this.allUsers != null) && this.allUsers.length > 0;
-  }
-
   private getAvailableFriendNames(): string[] {
     if (!this.allUsers) {
       return [];
@@ -203,6 +208,10 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
+  private getCanAddFriends(): boolean {
+    return (this.allUsers != null) && this.allUsers.length > 0;
+  }
+
   // private methods: helper
 
   private setFormState(formState: FormState): void {
@@ -210,7 +219,7 @@ export class UserFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // Enable/disable form
     if (this.formGroup) {
-      if (this.formState === FormState.SAVING || this.formState === FormState.LOADING) {
+      if (this.isFormBusy) {
         this.formGroup.disable();
         return;
       }
