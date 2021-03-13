@@ -3,6 +3,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialUsersState } from '../../../+state/users.reducer';
 import { UsersReportUserFormComponent } from './users-report-user-form.component';
+import { UserEntity } from '@ngf/shared-ui';
+import * as UsersActions from '../../../+state/users.actions';
 
 describe('UsersReportUserFormComponent', () => {
   let store: MockStore;
@@ -30,5 +32,18 @@ describe('UsersReportUserFormComponent', () => {
     expect(comp).toBeTruthy();
   });
 
-  // https://ngrx.io/guide/store/testing
+  describe('onUserSaved', () => {
+    it('should dispatch requestAddUserFromUserReports with user data', () => {
+      const user: UserEntity = {
+        name: 'Jessica', age: 37, weight: 166, friendNames: ['Jordan']
+      };
+      const action = UsersActions.requestAddUserFromUserReports({ user });
+      const dispatchSpy = spyOn(store, 'dispatch');
+
+      comp.onUserSaved(user);
+
+      expect(dispatchSpy).toHaveBeenCalledWith(action);
+    });
+  });
+
 });
