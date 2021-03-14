@@ -8,6 +8,7 @@
     "nx": "nx",
     "start": "ng serve",
     "build": "ng build",
+    "build-and-deploy": "ng build --prod --base-href https://tw3.github.io/ngx-friends/ && npx angular-cli-ghpages -d dist/apps/ngx-friends/ --no-silent",
     "test": "nx run ngx-friends:test && nx run shared-ui:test && nx run chart-cards-ui:test && nx run material:test",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "npx nx run ngx-friends-e2e:e2e",
