@@ -81,6 +81,7 @@
     "@types/webpack": "4.41.21",
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
+    "angular-cli-ghpages": "^1.0.0-rc.1",
     "cypress": "^6.0.1",
     "cypress-image-snapshot": "^4.0.1",
     "dotenv": "6.2.0",
