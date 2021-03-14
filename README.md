@@ -12,6 +12,8 @@ To run the app locally:
 4. `npm start`
 5. Navigate to http://localhost:4200/
 
+## Instructions
+
 Once the app is loaded you will see the New User Details form. Enter in the Name, Age, Weight, and Friends for the user
 and click the Add User button.
 
