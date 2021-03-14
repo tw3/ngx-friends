@@ -1,6 +1,8 @@
 # NGX-Friends
 
-## Run the application
+## Running the app
+
+The simplest way to see the app is to [visit the deployed app on GitHub pages](https://tw3.github.io/ngx-friends/).
 
 To run the app locally:
 
@@ -20,7 +22,9 @@ Weight, and Friends.
 
 ![NGX Friends Demo](https://raw.githubusercontent.com/tw3/ngx-friends/master/doc/images/ngx-friends-demo.gif)
 
-## Run storybook for chart-cards-ui
+## Running storybook for chart-cards-ui
+
+[Storybook](https://storybook.js.org/) is a great tool to see and interact with your app components in isolation.
 
 1. ng run chart-cards-ui:storybook
 2. Visit http://localhost:4400/ in your browser
@@ -29,34 +33,34 @@ Weight, and Friends.
 
 ## Testing
 
-### Run e2e tests for the app
+### Running e2e tests for the app
 
 1. `npx nx run ngx-friends-e2e:e2e --watch`
 2. Wait for the cypress test window to launch
 3. Click "app.spec.ts"
 4. End-to-end tests for the application will run
 
-### Run e2e tests for storybook in chart-cards-ui lib
+### Running storybook e2e tests for the chart-cards-ui lib
 
 1. `npx nx run chart-cards-ui-e2e:e2e --watch`
 2. Wait for the cypress test window to launch
 3. Click any of the spec.ts links
 4. End-to-end tests for the chart cards will run
 
-### Run e2e tests for storybook in shared-ui lib
+### Run storybook e2e tests for the shared-ui lib
 
 1. `npx nx run shared-ui-e2e:e2e --watch`
 2. Wait for the cypress test window to launch
 3. Click any of the spec.ts links
 4. End-to-end tests for the chart cards will run
 
-### Run unit tests
+### Running unit tests
 
 ```
 npm test
 ```
 
-## Libraries/Frameworks Used
+## Libraries/Frameworks used
 
 - [Angular](https://angular.io/) v11
   - Modules
@@ -89,6 +93,8 @@ npm test
 - [NgxCharts](https://swimlane.github.io/ngx-charts/) v17 charting framework
 - [D3](https://d3js.org/) v4 charting library
 - [Flexboxgrid](http://flexboxgrid.com/) v6 grid system
+- [angular-cli-ghpages](https://medium.com/faun/host-angular-app-for-free-8a443d324cda) v1 script for easy deployment to
+  GitHub Pages
 
 ## App / lib / module relationships
 
