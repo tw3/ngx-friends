@@ -77,6 +77,7 @@ npm test
     - Form validation
   - [Typescript](https://www.typescriptlang.org/) v4 language
   - [RxJS](https://rxjs-dev.firebaseapp.com/guide/overview) v6 reactive programming library
+- [NgRX](https://ngrx.io/) v11
 - [Angular Material](https://material.angular.io/) v11 component library
   - Material toolbar
   - Material card
